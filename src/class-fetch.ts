@@ -19,7 +19,7 @@ class Foo {
     @RequestInit() init: RequestInit,
     @RawBody() rawBody: BodyInit,
     @Body("application/json") body: unknown,
-    @Headers("aa") header: string
+    @Headers("xxx") header: string
   ): Promise<number> {
     autoImplement();
   }
