@@ -1,3 +1,4 @@
+.debug
 .pnpm-store
 .vscode
 node_modules
