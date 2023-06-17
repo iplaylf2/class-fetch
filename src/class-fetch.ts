@@ -1,3 +1,4 @@
+import { build } from "./client/build";
 import { Body } from "./decorator/body";
 import { Fetch } from "./decorator/fetch";
 import { HandleResponse } from "./decorator/handle-response";
@@ -24,3 +25,5 @@ class Foo {
     autoImplement();
   }
 }
+
+const foo = build(Foo);
