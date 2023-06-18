@@ -1,9 +1,7 @@
 import { Middleware } from "src/kit/type/middleware";
 
 export class ClientFactory {
-  public use<MiddlewareList extends Middleware[]>(
-    middlewareList: MiddlewareList
-  ): ClientFactory {
+  public use(middlewareList: Middleware[]): ClientFactory {
     throw "todo";
   }
 
