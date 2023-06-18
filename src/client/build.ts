@@ -1,7 +1,7 @@
-import { createFactory } from "./create-factory";
+import { use } from "./use";
 
-export function build<T>(ctor: new () => T): T {
-  return factory(ctor);
+export function build<T>(ctor: new () => T, context: unknown = null): T {
+  return factory.build(ctor, context);
 }
 
-const factory = createFactory({});
+const factory = use([]);
