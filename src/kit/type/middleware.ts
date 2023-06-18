@@ -1,5 +1,5 @@
-export type Middleware<T, R> = (
+export type Middleware = (
   request: Request,
-  next: <T, R>(request: Request, context: T) => Promise<[Response, R]>,
-  context: T
-) => Promise<R>;
+  next: (request: Request, context: unknown) => Promise<[Response, unknown]>,
+  context: unknown
+) => Promise<unknown>;
