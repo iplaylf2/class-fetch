@@ -5,7 +5,7 @@ export class ClientFactory {
     throw "todo";
   }
 
-  public build<T>(ctor: new () => T, context: unknown): T {
+  public build<T>(ctor: new () => T): T {
     throw "todo";
   }
 }
