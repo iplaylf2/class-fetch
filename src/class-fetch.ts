@@ -6,6 +6,7 @@ import { Method } from "./decorator/method";
 import { Middleware } from "./decorator/middleware";
 import { Param } from "./decorator/param";
 import { RawBody } from "./decorator/raw-body";
+import { ReThrow } from "./decorator/re-throw";
 import { RequestInit } from "./decorator/request-init";
 import { Return } from "./decorator/return";
 import { ReturnType } from "./decorator/return-type";
@@ -13,6 +14,7 @@ import { autoImplement } from "./kit/utility/auto-implement";
 import { t } from "./utility/string";
 
 @Fetch("xx.com")
+@ReThrow((e, context) => e)
 @Middleware([])
 class Foo {
   @Method("post", t`xxx/${"aa"}`)
@@ -20,6 +22,7 @@ class Foo {
     throw "todo remove";
   })
   @ReturnType(Number)
+  @ReThrow((e, context) => e)
   @Middleware([])
   public method1(
     @Param("aa") aa: string,
