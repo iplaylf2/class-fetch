@@ -10,12 +10,13 @@ import { RequestInit } from "./decorator/request-init";
 import { Return } from "./decorator/return";
 import { ReturnType } from "./decorator/return-type";
 import { autoImplement } from "./kit/utility/auto-implement";
+import { t } from "./utility/string";
 
-@Fetch("")
+@Fetch("xx.com")
 @Middleware([])
 class Foo {
-  @Method("post", "xxx/${aa}")
-  @Return((response, context) => {
+  @Method("post", t`xxx/${"aa"}`)
+  @Return((context) => {
     throw "todo remove";
   })
   @ReturnType(Number)
@@ -32,5 +33,3 @@ class Foo {
 }
 
 const foo = build(Foo);
-
-type x = PropertyDecorator;

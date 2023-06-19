@@ -1,5 +1,7 @@
+import { RequestContext } from "./request-context";
+import { ResponseContext } from "./response-context";
+
 export type Middleware = (
-  request: Request,
-  next: (request: Request, context: unknown) => Promise<[Response, unknown]>,
-  context: unknown
-) => Promise<unknown>;
+  context: RequestContext,
+  next: (context: RequestContext) => Promise<ResponseContext>
+) => Promise<ResponseContext>;
