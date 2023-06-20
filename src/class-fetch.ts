@@ -17,7 +17,7 @@ import { t } from "./utility/string";
 
 @Fetch("xx.com")
 @ReThrow((e, context) => e)
-@Middleware([])
+@Middleware()
 class Foo {
   @Method("post", t`xxx/${"aa"}`)
   @Return((context) => {
@@ -25,7 +25,7 @@ class Foo {
   })
   @ReturnType(Number)
   @ReThrow((e, context) => e)
-  @Middleware([])
+  @Middleware()
   public method1(
     @Param("aa") aa: string,
     @Query("bb") bb: string,
