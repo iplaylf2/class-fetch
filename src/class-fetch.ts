@@ -15,7 +15,7 @@ import { ReturnType } from "./decorator/return-type";
 import { autoImplement } from "./kit/utility/auto-implement";
 import { t } from "./utility/string";
 
-@Fetch("xx.com")
+@Fetch("https://github.com")
 @ReThrow((e, context) => e)
 @Middleware()
 class Foo {
