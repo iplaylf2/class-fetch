@@ -1,4 +1,5 @@
 import { build } from "./client/build";
+import { Apply } from "./decorator/apply";
 import { Body } from "./decorator/body";
 import { Fetch } from "./decorator/fetch";
 import { Header } from "./decorator/header";
@@ -31,7 +32,8 @@ class Foo {
     @RequestInit() init: RequestInit,
     @RawBody() rawBody: BodyInit,
     @Body("application/json") body: unknown,
-    @Header("xxx") header: string
+    @Header("xxx") header: string,
+    @Apply((arg: number, request, attach) => request) xxx: number
   ): Promise<number> {
     autoImplement();
   }
