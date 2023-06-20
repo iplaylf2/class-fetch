@@ -1,4 +1,7 @@
-import { RequestContext } from "./request-context";
-import { ResponseContext } from "./response-context";
+import { Attach } from "./attach";
 
-export type FetchContext = RequestContext & ResponseContext;
+export type FetchContext = {
+  request: Request;
+  response: Response;
+  attach: Attach;
+};

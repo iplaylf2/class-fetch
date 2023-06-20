@@ -1,7 +1,7 @@
-import { RequestContext } from "./request-context";
-import { ResponseContext } from "./response-context";
+import { Attach } from "./attach";
 
 export type Middleware = (
-  context: RequestContext,
-  next: (context: RequestContext) => Promise<ResponseContext>
-) => Promise<unknown>;
+  request: Request,
+  next: (request: Request) => Promise<Response>,
+  attach: Attach
+) => Promise<void>;

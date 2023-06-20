@@ -1,3 +1,4 @@
+import { Attach } from "src/kit/type/attach";
 import { Middleware } from "src/kit/type/middleware";
 
 export class ClientFactory {
@@ -5,7 +6,7 @@ export class ClientFactory {
     throw "todo";
   }
 
-  public build<T>(ctor: new () => T, attach: unknown): T {
+  public build<T>(ctor: new () => T, attach: Attach): T {
     throw "todo";
   }
 }
