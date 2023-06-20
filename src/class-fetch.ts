@@ -16,7 +16,7 @@ import { autoImplement } from "./kit/utility/auto-implement";
 import { t } from "./utility/string";
 
 @Fetch("https://github.com")
-@ReThrow((e, context) => e)
+@ReThrow((error, context) => error)
 @Middleware()
 class Foo {
   @Method("post", t`xxx/${"aa"}`)
@@ -24,7 +24,7 @@ class Foo {
     throw "todo remove";
   })
   @ReturnType(Number)
-  @ReThrow((e, context) => e)
+  @ReThrow((error, context) => error)
   @Middleware()
   public method1(
     @Param("aa") aa: string,

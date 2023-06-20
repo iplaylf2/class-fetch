@@ -4,4 +4,4 @@ export type Middleware = (
   request: Request,
   next: (request: Request) => Promise<Response>,
   attach: Attach
-) => Promise<void>;
+) => Promise<Response>;
