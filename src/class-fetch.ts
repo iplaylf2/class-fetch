@@ -5,6 +5,7 @@ import { Headers } from "./decorator/headers";
 import { Method } from "./decorator/method";
 import { Middleware } from "./decorator/middleware";
 import { Param } from "./decorator/param";
+import { Query } from "./decorator/query";
 import { RawBody } from "./decorator/raw-body";
 import { ReThrow } from "./decorator/re-throw";
 import { RequestInit } from "./decorator/request-init";
@@ -26,6 +27,7 @@ class Foo {
   @Middleware([])
   public method1(
     @Param("aa") aa: string,
+    @Query("bb") bb: string,
     @RequestInit() init: RequestInit,
     @RawBody() rawBody: BodyInit,
     @Body("application/json") body: unknown,
