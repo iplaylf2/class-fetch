@@ -1,4 +1,4 @@
-import { Attach } from "src/kit/type/attach";
+import { AttachContext } from "src/kit/type/attach-context";
 import { Middleware } from "src/kit/type/middleware";
 
 export class ClientFactory {
@@ -6,7 +6,7 @@ export class ClientFactory {
     throw "todo";
   }
 
-  public build<T>(ctor: new () => T, attach: Attach): T {
+  public build<T>(ctor: new () => T, handler: () => AttachContext): T {
     throw "todo";
   }
 }

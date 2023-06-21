@@ -1,7 +1,7 @@
-import { Attach } from "./attach";
+import { AttachContext } from "./attach-context";
 
 export type Middleware = (
   request: Request,
   next: (request: Request) => Promise<Response>,
-  attach: Attach
+  context: AttachContext
 ) => Promise<Response>;

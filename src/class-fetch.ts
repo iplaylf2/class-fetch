@@ -33,7 +33,7 @@ class Foo {
     @RawBody() rawBody: BodyInit,
     @Body("application/json") body: unknown,
     @Header("xxx") header: string,
-    @Apply((arg: number, request, attach) => request) xxx: number
+    @Apply((arg: number, request, context) => request) xxx: number
   ): Promise<number> {
     autoImplement();
   }

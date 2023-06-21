@@ -1,7 +1,7 @@
-import { Attach } from "./attach";
+import { AttachContext } from "./attach-context";
 
 export type FetchContext = {
   request: Request;
   response: Response;
-  attach: Attach;
+  context: AttachContext;
 };
