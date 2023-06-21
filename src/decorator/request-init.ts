@@ -1,9 +1,12 @@
 import { ParameterDecorator } from "src/type/parameter-decorator";
+import { Apply } from "./apply";
 
 export function RequestInit<
   Target,
   Key extends keyof Target,
   Index extends number
 >(): ParameterDecorator<Target, Key, Index, RequestInit> {
-  throw "todo";
+  return Apply((arg: RequestInit, request) => {
+    return new Request(request, arg);
+  });
 }

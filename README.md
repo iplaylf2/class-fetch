@@ -2,7 +2,7 @@
 
 preprocess -> middleware -> prettyRequest -> middleware -> transformResponse
 
-- preprocess: Fetch，Method, Param.
+- preprocess: Fetch -> Method -> Param.
 - middleware: before next.
 - prettyRequest: Header, Query, RawBody, Body, RequestInit, Apply.
 - middleware: after next.
