@@ -1,5 +1,5 @@
+import { ClientFactory } from "src/client/client-factory";
 import { AttachContext } from "src/kit/type/attach-context";
-import { ClientFactory } from "../client-factory";
 
 export function build<T>(
   ctor: new () => T,
