@@ -1,4 +1,4 @@
-import { build } from "./client/build";
+import { build } from "./client/utility/build";
 import { Apply } from "./decorator/apply";
 import { Body } from "./decorator/body";
 import { Fetch } from "./decorator/fetch";

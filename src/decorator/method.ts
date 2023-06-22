@@ -1,4 +1,4 @@
-import { AsyncFunction } from "src/kit/type/async-function";
+import { AsyncFunction } from "src/type/function";
 import { MethodDecorator } from "src/type/method-decorator";
 import { Format } from "src/utility/string";
 

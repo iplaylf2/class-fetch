@@ -1,5 +1,5 @@
-import { AsyncFunction } from "src/kit/type/async-function";
 import { Middleware } from "src/kit/type/middleware";
+import { AsyncFunction } from "src/type/function";
 import { MethodDecorator } from "src/type/method-decorator";
 
 export function Middleware<T extends AsyncFunction>(

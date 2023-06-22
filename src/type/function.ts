@@ -5,3 +5,5 @@ export type Callable<Args extends unknown[] = [], ReturnType = any> = (
 export type Newable<Args extends unknown[] = [], ReturnType = any> = new (
   ...args: Args
 ) => ReturnType;
+
+export type AsyncFunction = Callable<any, Promise<any>>;
