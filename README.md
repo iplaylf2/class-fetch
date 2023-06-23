@@ -1,12 +1,11 @@
 ## order
 
-preprocess -> middleware -> prettyRequest -> middleware -> transformResponse
+initRequest -> prettyRequest -> middleware -> transformResponse
 
-- preprocess: Fetch -> Method -> Param.
-- middleware: before next.
-- prettyRequest: Header, Query, RawBody, Body, RequestInit, Apply.
-- middleware: after next.
-- transformResponse: ReThrow, Return, ReturnType.
+- initRequest: Fetch -> Method.
+- prettyRequest: Param -> Apply( Header, Query, RawBody, Body, RequestInit ).
+- middleware.
+- transformResponse: Return, ReturnType, ReThrow.
 
 ### middleware order
 

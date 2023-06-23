@@ -1,4 +1,4 @@
-import { AttachContext } from "src/kit/type/attach-context";
+import { AttachContext } from "src/client/type/attach-context";
 import { ParameterDecorator } from "src/type/parameter-decorator";
 
 export function Apply<
@@ -9,5 +9,7 @@ export function Apply<
 >(
   handler: (arg: T, request: Request, context: AttachContext) => Request
 ): ParameterDecorator<Target, Key, Index, T> {
-  throw "todo";
+  return function (target, propertyKey, parameterIndex) {
+    return;
+  } as ParameterDecorator<Target, Key, Index, T>;
 }

@@ -1,3 +1,4 @@
+import { autoImplement } from "./client/utility/auto-implement";
 import { Apply } from "./decorator/apply";
 import { Body } from "./decorator/body";
 import { Fetch } from "./decorator/fetch";
@@ -12,7 +13,6 @@ import { RequestInit } from "./decorator/request-init";
 import { Return } from "./decorator/return";
 import { ReturnType } from "./decorator/return-type";
 import { build } from "./derivant/build";
-import { autoImplement } from "./kit/utility/auto-implement";
 import { t } from "./utility/string";
 
 @Fetch("https://github.com")

@@ -1,5 +1,5 @@
-import { AttachContext } from "src/kit/type/attach-context";
-import { Middleware } from "src/kit/type/middleware";
+import { AttachContext } from "src/client/type/attach-context";
+import { Middleware } from "src/client/type/middleware";
 
 export class ClientFactory {
   public use(...middlewareList: Middleware[]): ClientFactory {

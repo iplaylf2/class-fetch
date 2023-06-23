@@ -1,4 +1,4 @@
-import { Middleware } from "src/kit/type/middleware";
+import { Middleware } from "src/client/type/middleware";
 import { AsyncFunction } from "src/type/function";
 import { MethodDecorator } from "src/type/method-decorator";
 
