@@ -49,7 +49,7 @@ export function Body<Target, Key extends keyof Target, Index extends number>(
     });
 
     const headers = new Headers(request.headers);
-    headers.append("Content-type", contentType);
+    headers.append("content-type", contentType);
     // get encoder from context
     // encode(contentType,arg)
     return new Request(request, { headers, body });
