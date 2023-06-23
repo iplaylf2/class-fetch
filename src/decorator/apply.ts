@@ -1,4 +1,5 @@
-import { AttachContext } from "src/client/type/attach-context";
+import { getMethodMeta } from "src/client/client-meta/method-meta";
+import { PrettyRequest } from "src/client/type/pretty-request";
 import { ParameterDecorator } from "src/type/parameter-decorator";
 
 export function Apply<
@@ -6,10 +7,10 @@ export function Apply<
   Key extends keyof Target,
   Index extends number,
   T
->(
-  handler: (arg: T, request: Request, context: AttachContext) => Request
-): ParameterDecorator<Target, Key, Index, T> {
+>(handler: PrettyRequest<T>): ParameterDecorator<Target, Key, Index, T> {
   return function (target, propertyKey, parameterIndex) {
-    return;
+    const meta = getMethodMeta(target[propertyKey] as any);
+    const parameterMeta = meta.parameterMeta[1];
+    parameterMeta.push({ handler, index: parameterIndex });
   } as ParameterDecorator<Target, Key, Index, T>;
 }

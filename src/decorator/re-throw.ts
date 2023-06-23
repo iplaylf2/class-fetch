@@ -1,3 +1,5 @@
+import { getClassMeta } from "src/client/client-meta/class-meta";
+import { getMethodMeta } from "src/client/client-meta/method-meta";
 import { ReThrow } from "src/client/type/re-throw";
 import { AsyncFunction } from "src/type/function";
 import { MethodDecorator } from "src/type/method-decorator";
@@ -5,5 +7,13 @@ import { MethodDecorator } from "src/type/method-decorator";
 export function ReThrow<T extends AsyncFunction>(
   handler: ReThrow
 ): ClassDecorator & MethodDecorator<T> {
-  throw "todo";
+  return function (target, methodKey) {
+    if (undefined === methodKey) {
+      const meta = getClassMeta(target as any);
+      meta.reThrow.push(handler);
+    } else {
+      const meta = getMethodMeta((target as any)[methodKey]);
+      meta.reThrow.push(handler);
+    }
+  } as ClassDecorator & MethodDecorator<T>;
 }
