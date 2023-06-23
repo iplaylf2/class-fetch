@@ -1,5 +1,5 @@
-import { ClientError } from "../error";
+import { ClassFetchError } from "../../error";
 
 export function autoImplement(): never {
-  throw new ClientError("This method should be automatically implemented.");
+  throw new ClassFetchError("This method should be automatically implemented.");
 }

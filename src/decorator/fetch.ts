@@ -1,5 +1,5 @@
 import { getClassMeta } from "src/client/client-meta/class-meta";
-import { ClientDecoratorError } from "src/client/error";
+import { ClassFetchDecoratorError } from "src/error";
 
 export function Fetch(
   info: RequestInfo | URL,
@@ -11,7 +11,7 @@ export function Fetch(
     if (undefined === request) {
       meta.request = request;
     } else {
-      throw new ClientDecoratorError("Request cannot be redefined.");
+      throw new ClassFetchDecoratorError("Request cannot be redefined.");
     }
   };
 }

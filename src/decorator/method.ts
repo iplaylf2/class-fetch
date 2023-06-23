@@ -1,5 +1,5 @@
 import { getMethodMeta } from "src/client/client-meta/method-meta";
-import { ClientDecoratorError } from "src/client/error";
+import { ClassFetchDecoratorError } from "src/error";
 import { AsyncFunction } from "src/type/function";
 import { MethodDecorator } from "src/type/method-decorator";
 import { expression } from "src/utility/expression";
@@ -41,7 +41,7 @@ export function Method<T extends AsyncFunction>(
     if (undefined === method) {
       meta.method = method;
     } else {
-      throw new ClientDecoratorError("Method cannot be redefined.");
+      throw new ClassFetchDecoratorError("Method cannot be redefined.");
     }
 
     meta.path = path as any;
