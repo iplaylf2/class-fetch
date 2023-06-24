@@ -44,7 +44,7 @@ export function Method<T extends AsyncFunction>(
       throw new ClassFetchDecoratorError("Method cannot be redefined.");
     }
 
-    meta.path = path as any;
-    meta.init = init as any;
+    meta.path = path!;
+    meta.init = init!;
   };
 }
