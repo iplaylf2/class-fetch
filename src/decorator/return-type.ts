@@ -6,14 +6,15 @@ import {
   bodyDecoderSymbol,
   defaultBodyDecoderSymbol,
 } from "src/plugin/body-decoder/attach-context-item";
+import { CanBeArray } from "src/plugin/body-decoder/type";
 import { AsyncFunction } from "src/type/function";
 import { MethodDecorator } from "src/type/method-decorator";
 import { UnwrapPromise } from "src/type/promise";
-import { Return } from "./return";
 import { expression } from "src/utility/expression";
+import { Return } from "./return";
 
 export function ReturnType<T extends AsyncFunction>(
-  type: Constructor<UnwrapPromise<ReturnType<T>>>
+  type: Constructor<CanBeArray<UnwrapPromise<ReturnType<T>>>>
 ): MethodDecorator<T> {
   return Return((context) => {
     const contentTypeXBodyDecoder = context.context.get(bodyDecoderSymbol) as
@@ -51,7 +52,7 @@ export function ReturnType<T extends AsyncFunction>(
     try {
       return decoder(context.response, type);
     } catch (e) {
-      throw new ClassFetchTransformResponseError(String(e));
+      throw new ClassFetchTransformResponseError(e as Error);
     }
   });
 }

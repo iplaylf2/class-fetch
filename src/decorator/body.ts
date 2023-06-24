@@ -44,7 +44,7 @@ export function Body<Target, Key extends keyof Target, Index extends number>(
       try {
         return encoder(arg) as BodyInit;
       } catch (e) {
-        throw new ClassFetchPrettyRequestError(String(e));
+        throw new ClassFetchPrettyRequestError(e as Error);
       }
     });
 

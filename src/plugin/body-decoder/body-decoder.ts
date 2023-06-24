@@ -29,6 +29,7 @@ export function transform<Instance extends object>(
 
   const errors = validateSync(toValidate, {
     skipMissingProperties: false,
+    forbidUnknownValues: false,
   });
 
   if (errors.length > 0) {

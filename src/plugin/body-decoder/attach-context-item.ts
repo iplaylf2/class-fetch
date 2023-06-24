@@ -1,7 +1,7 @@
-import { Newable, Callable } from "src/type/function";
+import { Newable } from "src/type/function";
 
 export const bodyDecoderSymbol = Symbol("body-decoder");
-export type Constructor<T> = Newable<any, T> | Callable<any, T>;
+export type Constructor<T> = Newable<any, T | { valueOf: () => T }>;
 export type BodyDecoder = (
   body: Body,
   type: Constructor<unknown> | null
