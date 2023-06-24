@@ -8,10 +8,10 @@ export function Fetch(
   const request = new Request(info, init);
   return (target) => {
     const meta = getClassMeta(target as any);
-    if (undefined === request) {
-      meta.request = request;
-    } else {
+    if (meta.request) {
       throw new ClassFetchDecoratorError("Request cannot be redefined.");
+    } else {
+      meta.request = request;
     }
   };
 }

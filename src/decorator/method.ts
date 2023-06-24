@@ -38,7 +38,7 @@ export function Method<T extends AsyncFunction>(
   return function (target, propertyKey) {
     const meta = getMethodMeta((target as any)[propertyKey]);
 
-    if (undefined === method) {
+    if (undefined === meta.method) {
       meta.method = method;
     } else {
       throw new ClassFetchDecoratorError("Method cannot be redefined.");

@@ -32,20 +32,20 @@ export function ReturnType<T extends AsyncFunction>(
 
     const decoder = expression(() => {
       const decoder = contentTypeXBodyDecoder.get(contentType);
-      if (undefined === decoder) {
+      if (decoder) {
+        return decoder;
+      } else {
         const decoder = context.context.get(defaultBodyDecoderSymbol) as
           | BodyDecoder
           | undefined;
 
-        if (undefined === decoder) {
+        if (decoder) {
+          return decoder;
+        } else {
           throw new ClassFetchTransformResponseError(
             "Missing default BodyDecoder."
           );
-        } else {
-          return decoder;
         }
-      } else {
-        return decoder;
       }
     });
 

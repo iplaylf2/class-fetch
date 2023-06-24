@@ -9,10 +9,10 @@ export function Return<T extends AsyncFunction>(
 ): MethodDecorator<T> {
   return function (target, propertyKey) {
     const meta = getMethodMeta((target as any)[propertyKey]);
-    if (undefined === meta.return) {
-      meta.return = handler;
-    } else {
+    if (meta.return) {
       throw new ClassFetchDecoratorError("Return cannot be redefined.");
+    } else {
+      meta.return = handler;
     }
   };
 }

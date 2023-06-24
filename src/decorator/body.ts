@@ -23,20 +23,20 @@ export function Body<Target, Key extends keyof Target, Index extends number>(
 
     const encoder = expression(() => {
       const encoder = contentTypeXBodyEncoder.get(contentType);
-      if (undefined === encoder) {
+      if (encoder) {
+        return encoder;
+      } else {
         const encoder = context.get(defaultBodyEncoderSymbol) as
           | BodyEncoder
           | undefined;
 
-        if (undefined === encoder) {
+        if (encoder) {
+          return encoder;
+        } else {
           throw new ClassFetchPrettyRequestError(
             "Missing default BodyEncoder."
           );
-        } else {
-          return encoder;
         }
-      } else {
-        return encoder;
       }
     });
 
