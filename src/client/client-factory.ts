@@ -10,7 +10,7 @@ export class ClientFactory {
 
   public build<T>(ctor: new () => T, handle: () => AttachContext): T {
     const classMeta = getClassMeta(ctor);
-    if (undefined === classMeta.request) {
+    if (null === classMeta.request) {
       throw new ClassFetchBuildError("Missing request");
     }
 
