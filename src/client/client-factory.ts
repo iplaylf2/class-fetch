@@ -8,7 +8,7 @@ export class ClientFactory {
     throw "todo";
   }
 
-  public build<T>(ctor: new () => T, handler: () => AttachContext): T {
+  public build<T>(ctor: new () => T, handle: () => AttachContext): T {
     const classMeta = getClassMeta(ctor);
     if (undefined === classMeta.request) {
       throw new ClassFetchBuildError("Missing request");

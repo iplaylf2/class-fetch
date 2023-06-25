@@ -32,7 +32,7 @@ export type MethodMeta = {
 
 export type ParameterMetaItem = {
   index: number;
-  handler: PrettyRequest<any>;
+  handle: PrettyRequest<any>;
 };
 
 const methodXMeta = new WeakMap<Callable, MethodMeta>();

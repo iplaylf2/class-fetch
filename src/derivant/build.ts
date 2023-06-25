@@ -3,9 +3,9 @@ import { AttachContext } from "src/client/type/attach-context";
 
 export function build<T>(
   ctor: new () => T,
-  handler: () => AttachContext = () => new Map()
+  handle: () => AttachContext = () => new Map()
 ): T {
-  return factory.build(ctor, handler);
+  return factory.build(ctor, handle);
 }
 
 const factory = new ClientFactory();
