@@ -1,6 +1,5 @@
 import { autoImplement } from "./client/utility/auto-implement";
 import { Apply } from "./decorator/apply";
-import { Body } from "./decorator/body";
 import { Fetch } from "./decorator/fetch";
 import { Header } from "./decorator/header";
 import { Method } from "./decorator/method";
@@ -11,8 +10,9 @@ import { RawBody } from "./decorator/raw-body";
 import { ReThrow } from "./decorator/re-throw";
 import { RequestInit } from "./decorator/request-init";
 import { Return } from "./decorator/return";
-import { ReturnType } from "./decorator/return-type";
-import { build } from "./derivant/build";
+import { ReturnType } from "./plugin/body-decoder/return-type";
+import { Body } from "./plugin/body-encoder/body";
+import { build } from "./plugin/normal-factory/build";
 import { t } from "./utility/string";
 
 @Fetch("https://github.com")

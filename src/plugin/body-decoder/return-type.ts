@@ -1,17 +1,17 @@
+import { Return } from "src/decorator/return";
 import { ClassFetchTransformResponseError } from "src/error";
+import { AsyncFunction } from "src/type/function";
+import { MethodDecorator } from "src/type/method-decorator";
+import { UnwrapPromise } from "src/type/promise";
+import { expression } from "src/utility/expression";
 import {
   BodyDecoder,
   Constructor,
   ContentTypeXBodyDecoder,
   bodyDecoderSymbol,
   defaultBodyDecoderSymbol,
-} from "src/plugin/body-decoder/attach-context-item";
-import { CanBeArray } from "src/plugin/body-decoder/type";
-import { AsyncFunction } from "src/type/function";
-import { MethodDecorator } from "src/type/method-decorator";
-import { UnwrapPromise } from "src/type/promise";
-import { expression } from "src/utility/expression";
-import { Return } from "./return";
+} from "./attach-context-item";
+import { CanBeArray } from "./type";
 
 export function ReturnType<T extends AsyncFunction>(
   type: Constructor<CanBeArray<UnwrapPromise<ReturnType<T>>>>

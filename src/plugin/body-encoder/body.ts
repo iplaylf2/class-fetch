@@ -1,13 +1,13 @@
+import { Apply } from "src/decorator/apply";
 import { ClassFetchPrettyRequestError } from "src/error";
+import { ParameterDecorator } from "src/type/parameter-decorator";
+import { expression } from "src/utility/expression";
 import {
   BodyEncoder,
   ContentTypeXBodyEncoder,
   bodyEncoderSymbol,
   defaultBodyEncoderSymbol,
-} from "src/plugin/body-encoder/attach-context-item";
-import { ParameterDecorator } from "src/type/parameter-decorator";
-import { expression } from "src/utility/expression";
-import { Apply } from "./apply";
+} from "./attach-context-item";
 
 export function Body<Target, Key extends keyof Target, Index extends number>(
   contentType: string
