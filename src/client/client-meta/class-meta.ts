@@ -2,6 +2,7 @@ import { Middleware } from "src/client/type/middleware";
 import { Newable } from "src/type/function";
 import { getSuperClass } from "src/utility/class";
 import { ReThrow } from "../type/re-throw";
+import { MethodMeta, cloneMethodMeta, createMethodMeta } from "./method-meta";
 
 export function getClassMeta(x: Newable): ClassMeta {
   const meta = classXMeta.get(x);
@@ -11,17 +12,27 @@ export function getClassMeta(x: Newable): ClassMeta {
     const superClass = getSuperClass(x);
     if (superClass) {
       const meta = getClassMeta(superClass);
-      return cloneMeta(meta);
+      return cloneClassMeta(meta);
     } else {
-      const meta: ClassMeta = {
-        request: null,
-        reThrow: [],
-        middleware: [],
-        method: [],
-      };
+      const meta = createClassMeta();
       classXMeta.set(x, meta);
       return meta;
     }
+  }
+}
+
+export function getMethodMeta(
+  ctor: Newable,
+  name: string | symbol
+): MethodMeta {
+  const classMeta = getClassMeta(ctor);
+  const methodMeta = classMeta.method.get(name);
+  if (methodMeta) {
+    return methodMeta;
+  } else {
+    const meta = createMethodMeta();
+    classMeta.method.set(name, meta);
+    return meta;
   }
 }
 
@@ -29,15 +40,26 @@ export type ClassMeta = {
   request: Request | null;
   reThrow: ReThrow[];
   middleware: Middleware[];
-  method: (string | symbol)[];
+  method: Map<string | symbol, MethodMeta>;
 };
 
-function cloneMeta(x: ClassMeta): ClassMeta {
+function createClassMeta(): ClassMeta {
+  return {
+    request: null,
+    reThrow: [],
+    middleware: [],
+    method: new Map(),
+  };
+}
+
+function cloneClassMeta(x: ClassMeta): ClassMeta {
   return {
     request: x.request,
     reThrow: Array.from(x.reThrow),
     middleware: Array.from(x.middleware),
-    method: Array.from(x.method),
+    method: new Map(
+      Array.from(x.method).map(([name, meta]) => [name, cloneMethodMeta(meta)])
+    ),
   };
 }
 

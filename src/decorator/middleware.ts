@@ -1,7 +1,6 @@
-import { getClassMeta } from "src/client/client-meta/class-meta";
-import { getMethodMeta } from "src/client/client-meta/method-meta";
+import { getClassMeta, getMethodMeta } from "src/client/client-meta/class-meta";
 import { Middleware } from "src/client/type/middleware";
-import { AsyncFunction } from "src/type/function";
+import { AsyncFunction, Newable } from "src/type/function";
 import { MethodDecorator } from "src/type/method-decorator";
 
 export function Middleware<T extends AsyncFunction>(
@@ -9,10 +8,10 @@ export function Middleware<T extends AsyncFunction>(
 ): ClassDecorator & MethodDecorator<T> {
   return function (target, methodKey) {
     if (undefined === methodKey) {
-      const meta = getClassMeta(target as any);
+      const meta = getClassMeta(target as Newable);
       meta.middleware.push(...middlewareList);
     } else {
-      const meta = getMethodMeta((target as any)[methodKey]);
+      const meta = getMethodMeta(target as Newable, methodKey);
       meta.middleware.push(...middlewareList);
     }
   } as ClassDecorator & MethodDecorator<T>;

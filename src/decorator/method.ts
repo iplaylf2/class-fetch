@@ -1,6 +1,6 @@
-import { getMethodMeta } from "src/client/client-meta/method-meta";
+import { getMethodMeta } from "src/client/client-meta/class-meta";
 import { ClassFetchDecoratorError } from "src/error";
-import { AsyncFunction } from "src/type/function";
+import { AsyncFunction, Newable } from "src/type/function";
 import { MethodDecorator } from "src/type/method-decorator";
 import { expression } from "src/utility/expression";
 import { Format } from "src/utility/string";
@@ -36,7 +36,7 @@ export function Method<T extends AsyncFunction>(
   });
 
   return function (target, propertyKey) {
-    const meta = getMethodMeta((target as any)[propertyKey]);
+    const meta = getMethodMeta(target as Newable, propertyKey);
 
     if (undefined === meta.method) {
       meta.method = method;
