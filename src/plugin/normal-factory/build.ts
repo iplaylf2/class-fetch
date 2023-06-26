@@ -1,11 +1,11 @@
 import { ClientFactory } from "src/client/client-factory";
 import { AttachContext } from "src/client/type/attach-context";
 
-export function build<T>(
+export function build<T extends {}>(
   ctor: new () => T,
-  handle: () => AttachContext = () => new Map()
+  handler: () => AttachContext = () => new Map()
 ): T {
-  return factory.build(ctor, handle);
+  return factory.build(ctor, handler);
 }
 
 const factory = new ClientFactory();

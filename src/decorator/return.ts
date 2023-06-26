@@ -5,14 +5,14 @@ import { AsyncFunction, Newable } from "src/type/function";
 import { MethodDecorator } from "src/type/method-decorator";
 
 export function Return<T extends AsyncFunction>(
-  handle: Return
+  handler: Return
 ): MethodDecorator<T> {
   return function (target, propertyKey) {
     const meta = getMethodMeta(target as Newable, propertyKey);
     if (meta.return) {
       throw new ClassFetchDecoratorError("Return cannot be redefined.");
     } else {
-      meta.return = handle;
+      meta.return = handler;
     }
   };
 }

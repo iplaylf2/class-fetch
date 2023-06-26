@@ -4,11 +4,16 @@ import { getClassMeta } from "./client-meta/class-meta";
 import { ClassFetchBuildError } from "src/error";
 
 export class ClientFactory {
-  public use(...middlewareList: Middleware[]): ClientFactory {
-    throw "todo";
+  public constructor(private readonly middleware: Middleware[] = []) {}
+
+  public use(...middleware: Middleware[]): ClientFactory {
+    return new ClientFactory(this.middleware.concat(middleware));
   }
 
-  public build<T>(ctor: new () => T, handle: () => AttachContext): T {
+  public build<T extends {}>(
+    ctor: new () => T,
+    handler: () => AttachContext
+  ): T {
     const classMeta = getClassMeta(ctor);
     if (null === classMeta.request) {
       throw new ClassFetchBuildError("Missing request");

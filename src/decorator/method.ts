@@ -25,10 +25,10 @@ export function Method<T extends AsyncFunction>(
 ): MethodDecorator<T> {
   const [path, init] = expression(() => {
     if (undefined === param1) {
-      return [];
+      return [null, null];
     } else {
       if (undefined === param2) {
-        return [param1 as string | Format];
+        return [param1 as string | Format, null];
       } else {
         return [param1 as string | Format, param2 as RequestInit];
       }
@@ -38,13 +38,13 @@ export function Method<T extends AsyncFunction>(
   return function (target, propertyKey) {
     const meta = getMethodMeta(target as Newable, propertyKey);
 
-    if (undefined === meta.method) {
+    if (null === meta.method) {
       meta.method = method;
     } else {
       throw new ClassFetchDecoratorError("Method cannot be redefined.");
     }
 
-    meta.path = path!;
-    meta.init = init!;
+    meta.path = path;
+    meta.init = init;
   };
 }

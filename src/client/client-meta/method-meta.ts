@@ -43,5 +43,5 @@ export type MethodMeta = {
 
 export type ParameterMetaItem = {
   index: number;
-  handle: PrettyRequest<any>;
+  handler: PrettyRequest<any>;
 };

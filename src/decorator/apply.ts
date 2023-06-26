@@ -8,10 +8,10 @@ export function Apply<
   Key extends keyof Target,
   Index extends number,
   T
->(handle: PrettyRequest<T>): ParameterDecorator<Target, Key, Index, T> {
+>(handler: PrettyRequest<T>): ParameterDecorator<Target, Key, Index, T> {
   return function (target, propertyKey, parameterIndex) {
     const meta = getMethodMeta(target as Newable, propertyKey as string);
     const parameterMeta = meta.parameterMeta[1];
-    parameterMeta.push({ handle, index: parameterIndex });
+    parameterMeta.push({ handler, index: parameterIndex });
   } as ParameterDecorator<Target, Key, Index, T>;
 }

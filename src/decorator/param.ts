@@ -68,7 +68,7 @@ export function Param<Target, Key extends keyof Target, Index extends number>(
       }
     };
 
-    const handle: PrettyRequest<string & ParamRecord> =
+    const handler: PrettyRequest<string & ParamRecord> =
       undefined === key
         ? handleRecord
         : (arg: string, request, context) =>
@@ -77,7 +77,7 @@ export function Param<Target, Key extends keyof Target, Index extends number>(
     const metaIndex = parameterMeta.length;
 
     parameterMeta.push({
-      handle,
+      handler,
       index: parameterIndex,
     });
   } as ParameterDecorator<Target, Key, Index, any>;
