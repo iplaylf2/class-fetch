@@ -1,8 +1,9 @@
 import { Middleware } from "src/client/type/middleware";
 import { Format } from "src/utility/string";
-import { PrettyRequest } from "../type/pretty-request";
 import { ReThrow } from "../type/re-throw";
 import { Return } from "../type/return";
+import { expression } from "src/utility/expression";
+import { ParameterMeta } from "./parameter-meta";
 
 export function createMethodMeta(): MethodMeta {
   return {
@@ -12,7 +13,7 @@ export function createMethodMeta(): MethodMeta {
     return: null,
     reThrow: [],
     middleware: [],
-    parameterMeta: [[], []],
+    parameterMeta: [],
   };
 }
 
@@ -24,11 +25,40 @@ export function cloneMethodMeta(x: MethodMeta): MethodMeta {
     return: x.return,
     reThrow: Array.from(x.reThrow),
     middleware: Array.from(x.middleware),
-    parameterMeta: [
-      Array.from(x.parameterMeta[0]),
-      Array.from(x.parameterMeta[1]),
-    ],
+    parameterMeta: x.parameterMeta.map((order) =>
+      order.map((index) => Array.from(index))
+    ),
   };
+}
+
+export function getParameterMeta(
+  methodMeta: MethodMeta,
+  order: number,
+  index: number
+): ParameterMeta {
+  const parameterMetaList = expression(() => {
+    const parameterMetaList = methodMeta.parameterMeta[order];
+    if (parameterMetaList) {
+      return parameterMetaList;
+    } else {
+      const parameterMetaList: ParameterMeta[] = [];
+      methodMeta.parameterMeta[order] = parameterMetaList;
+      return parameterMetaList;
+    }
+  });
+
+  const parameterMeta = expression(() => {
+    const parameterMeta = parameterMetaList[index];
+    if (parameterMeta) {
+      return parameterMeta;
+    } else {
+      const parameterMeta: ParameterMeta = [];
+      parameterMetaList[index] = parameterMeta;
+      return parameterMeta;
+    }
+  });
+
+  return parameterMeta;
 }
 
 export type MethodMeta = {
@@ -38,10 +68,5 @@ export type MethodMeta = {
   return: Return | null;
   reThrow: ReThrow[];
   middleware: Middleware[];
-  parameterMeta: [ParameterMetaItem[], ParameterMetaItem[]];
-};
-
-export type ParameterMetaItem = {
-  index: number;
-  handler: PrettyRequest<any>;
+  parameterMeta: ParameterMeta[][];
 };

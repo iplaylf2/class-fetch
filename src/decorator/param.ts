@@ -1,13 +1,15 @@
 import {
   ParamRecord,
-  paramRecordSymbol,
+  ParamType,
+  paramSymbol,
 } from "src/client/client-meta/attach-context-item";
 import { getClassMeta, getMethodMeta } from "src/client/client-meta/class-meta";
+import { getParameterMeta } from "src/client/client-meta/method-meta";
+import { ParameterMetaOrder } from "src/client/client-meta/parameter-meta";
 import { PrettyRequest } from "src/client/type/pretty-request";
 import { Newable } from "src/type/function";
 import { ParameterDecorator } from "src/type/parameter-decorator";
 import { expression } from "src/utility/expression";
-import { Format } from "src/utility/string";
 
 export function Param<
   Target,
@@ -23,25 +25,29 @@ export function Param<Target, Key extends keyof Target, Index extends number>(
   return function (target, propertyKey, parameterIndex) {
     const classMeta = getClassMeta(target as Newable);
     const methodMeta = getMethodMeta(classMeta, propertyKey as string);
-    const parameterMeta = methodMeta.parameterMeta[0];
+    const parameterMeta = getParameterMeta(
+      methodMeta,
+      ParameterMetaOrder.Param,
+      parameterIndex
+    );
 
     const handleRecord: PrettyRequest<ParamRecord> = (
       arg,
       request,
       context
     ) => {
-      const paramRecord = context.get(paramRecordSymbol) as
-        | ParamRecord
-        | undefined;
+      const param = context.get(paramSymbol) as ParamType | undefined;
 
-      if (undefined === paramRecord) {
+      if (undefined === param) {
         return request;
       }
 
+      const { pathFormat, paramRecord, finishHandler } = param;
+
       Object.assign(paramRecord, arg);
 
-      if (parameterMeta.length - 1 === metaIndex) {
-        const path = (methodMeta.path as Format)(paramRecord);
+      if (handler === finishHandler) {
+        const path = pathFormat(paramRecord);
 
         const url = new URL(request.url);
         const newPath = expression(() => {
@@ -75,11 +81,6 @@ export function Param<Target, Key extends keyof Target, Index extends number>(
         : (arg: string, request, context) =>
             handleRecord({ [key]: arg }, request, context);
 
-    const metaIndex = parameterMeta.length;
-
-    parameterMeta.push({
-      handler,
-      index: parameterIndex,
-    });
+    parameterMeta.push(handler);
   } as ParameterDecorator<Target, Key, Index, any>;
 }

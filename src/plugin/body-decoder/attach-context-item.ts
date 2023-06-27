@@ -8,4 +8,4 @@ export type BodyDecoder = (
 ) => Promise<unknown>;
 export type ContentTypeXBodyDecoder = Map<string, BodyDecoder>;
 
-export const defaultBodyDecoderSymbol = Symbol("body-decoder");
+export const defaultBodyDecoderSymbol = Symbol("default-body-decoder");

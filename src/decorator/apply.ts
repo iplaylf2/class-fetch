@@ -1,4 +1,6 @@
 import { getClassMeta, getMethodMeta } from "src/client/client-meta/class-meta";
+import { getParameterMeta } from "src/client/client-meta/method-meta";
+import { ParameterMetaOrder } from "src/client/client-meta/parameter-meta";
 import { PrettyRequest } from "src/client/type/pretty-request";
 import { Newable } from "src/type/function";
 import { ParameterDecorator } from "src/type/parameter-decorator";
@@ -12,7 +14,11 @@ export function Apply<
   return function (target, propertyKey, parameterIndex) {
     const classMeta = getClassMeta(target as Newable);
     const methodMeta = getMethodMeta(classMeta, propertyKey as string);
-    const parameterMeta = methodMeta.parameterMeta[1];
-    parameterMeta.push({ handler, index: parameterIndex });
+    const parameterMeta = getParameterMeta(
+      methodMeta,
+      ParameterMetaOrder.Apply,
+      parameterIndex
+    );
+    parameterMeta.push(handler);
   } as ParameterDecorator<Target, Key, Index, T>;
 }
