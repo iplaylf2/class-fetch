@@ -2,7 +2,7 @@ import {
   ParamRecord,
   paramRecordSymbol,
 } from "src/client/client-meta/attach-context-item";
-import { getMethodMeta } from "src/client/client-meta/class-meta";
+import { getClassMeta, getMethodMeta } from "src/client/client-meta/class-meta";
 import { PrettyRequest } from "src/client/type/pretty-request";
 import { Newable } from "src/type/function";
 import { ParameterDecorator } from "src/type/parameter-decorator";
@@ -21,8 +21,9 @@ export function Param<Target, Key extends keyof Target, Index extends number>(
   key?: string
 ): ParameterDecorator<Target, Key, Index, any> {
   return function (target, propertyKey, parameterIndex) {
-    const meta = getMethodMeta(target as Newable, propertyKey as string);
-    const parameterMeta = meta.parameterMeta[0];
+    const classMeta = getClassMeta(target as Newable);
+    const methodMeta = getMethodMeta(classMeta, propertyKey as string);
+    const parameterMeta = methodMeta.parameterMeta[0];
 
     const handleRecord: PrettyRequest<ParamRecord> = (
       arg,
@@ -40,7 +41,7 @@ export function Param<Target, Key extends keyof Target, Index extends number>(
       Object.assign(paramRecord, arg);
 
       if (parameterMeta.length - 1 === metaIndex) {
-        const path = (meta.path as Format)(paramRecord);
+        const path = (methodMeta.path as Format)(paramRecord);
 
         const url = new URL(request.url);
         const newPath = expression(() => {

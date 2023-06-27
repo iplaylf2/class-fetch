@@ -22,10 +22,9 @@ export function getClassMeta(x: Newable): ClassMeta {
 }
 
 export function getMethodMeta(
-  ctor: Newable,
+  classMeta: ClassMeta,
   name: string | symbol
 ): MethodMeta {
-  const classMeta = getClassMeta(ctor);
   const methodMeta = classMeta.method.get(name);
   if (methodMeta) {
     return methodMeta;

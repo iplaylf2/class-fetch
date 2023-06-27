@@ -1,4 +1,4 @@
-import { getMethodMeta } from "src/client/client-meta/class-meta";
+import { getClassMeta, getMethodMeta } from "src/client/client-meta/class-meta";
 import { ClassFetchDecoratorError } from "src/error";
 import { AsyncFunction, Newable } from "src/type/function";
 import { MethodDecorator } from "src/type/method-decorator";
@@ -36,15 +36,16 @@ export function Method<T extends AsyncFunction>(
   });
 
   return function (target, propertyKey) {
-    const meta = getMethodMeta(target as Newable, propertyKey);
+    const classMeta = getClassMeta(target as Newable);
+    const methodMeta = getMethodMeta(classMeta, propertyKey);
 
-    if (null === meta.method) {
-      meta.method = method;
+    if (null === methodMeta.method) {
+      methodMeta.method = method;
     } else {
       throw new ClassFetchDecoratorError("Method cannot be redefined.");
     }
 
-    meta.path = path;
-    meta.init = init;
+    methodMeta.path = path;
+    methodMeta.init = init;
   };
 }

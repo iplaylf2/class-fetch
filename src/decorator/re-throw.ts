@@ -8,11 +8,12 @@ export function ReThrow<T extends AsyncFunction>(
 ): ClassDecorator & MethodDecorator<T> {
   return function (target, methodKey) {
     if (undefined === methodKey) {
-      const meta = getClassMeta(target as Newable);
-      meta.reThrow.push(handler);
+      const classMeta = getClassMeta(target as Newable);
+      classMeta.reThrow.push(handler);
     } else {
-      const meta = getMethodMeta(target as Newable, methodKey);
-      meta.reThrow.push(handler);
+      const classMeta = getClassMeta(target as Newable);
+      const methodMeta = getMethodMeta(classMeta, methodKey);
+      methodMeta.reThrow.push(handler);
     }
   } as ClassDecorator & MethodDecorator<T>;
 }

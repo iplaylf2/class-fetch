@@ -8,11 +8,12 @@ export function Middleware<T extends AsyncFunction>(
 ): ClassDecorator & MethodDecorator<T> {
   return function (target, methodKey) {
     if (undefined === methodKey) {
-      const meta = getClassMeta(target as Newable);
-      meta.middleware.push(...middleware);
+      const classMeta = getClassMeta(target as Newable);
+      classMeta.middleware.push(...middleware);
     } else {
-      const meta = getMethodMeta(target as Newable, methodKey);
-      meta.middleware.push(...middleware);
+      const classMeta = getClassMeta(target as Newable);
+      const methodMeta = getMethodMeta(classMeta, methodKey);
+      methodMeta.middleware.push(...middleware);
     }
   } as ClassDecorator & MethodDecorator<T>;
 }
