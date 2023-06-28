@@ -4,4 +4,4 @@ export type PrettyRequest<T> = (
   arg: T,
   request: Request,
   context: AttachContext
-) => Request;
+) => Request | Promise<Request>;

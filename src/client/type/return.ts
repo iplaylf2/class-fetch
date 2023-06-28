@@ -1,3 +1,3 @@
 import { FetchContext } from "./fetch-context";
 
-export type Return = (context: FetchContext) => unknown;
+export type Return = (context: FetchContext) => unknown | Promise<unknown>;
