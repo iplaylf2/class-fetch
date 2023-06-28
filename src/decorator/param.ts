@@ -7,9 +7,9 @@ import { getClassMeta, getMethodMeta } from "src/client/client-meta/class-meta";
 import { getParameterMeta } from "src/client/client-meta/method-meta";
 import { ParameterMetaOrder } from "src/client/client-meta/parameter-meta";
 import { PrettyRequest } from "src/client/type/pretty-request";
+import { appendPath } from "src/client/utility/append-path";
 import { Newable } from "src/type/function";
 import { ParameterDecorator } from "src/type/parameter-decorator";
-import { expression } from "src/utility/expression";
 
 export function Param<
   Target,
@@ -49,26 +49,11 @@ export function Param<Target, Key extends keyof Target, Index extends number>(
       if (handler === finishHandler) {
         const path = pathFormat(paramRecord);
 
-        const url = new URL(request.url);
-        const newPath = expression(() => {
-          if (url.pathname.endsWith("/")) {
-            if (path.startsWith("/")) {
-              return `${url.pathname}${path.slice(1)}`;
-            } else {
-              return `${url.pathname}${path}`;
-            }
-          } else {
-            if (path.startsWith("/")) {
-              return `${url.pathname}${path}`;
-            } else {
-              return `${url.pathname}/${path}`;
-            }
-          }
-        });
+        const url = appendPath(request.url, path);
 
         return new Request({
           ...request,
-          url: new URL(newPath, url).toString(),
+          url,
         });
       } else {
         return request;
