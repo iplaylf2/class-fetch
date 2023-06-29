@@ -12,7 +12,7 @@ import {
 export function Body<Target, Key extends keyof Target, Index extends number>(
   contentType: string
 ): ParameterDecorator<Target, Key, Index, any> {
-  return Apply((arg: unknown, request, context) => {
+  return Apply(async (arg: unknown, request, context) => {
     const contentTypeXBodyEncoder = context.get(bodyEncoderSymbol) as
       | ContentTypeXBodyEncoder
       | undefined;
@@ -40,9 +40,9 @@ export function Body<Target, Key extends keyof Target, Index extends number>(
       }
     });
 
-    const body = expression(() => {
+    const body = await expression(async () => {
       try {
-        return encoder(arg) as BodyInit;
+        return (await encoder(arg)) as BodyInit;
       } catch (e) {
         throw new ClassFetchPrettyRequestError(e as Error);
       }

@@ -16,7 +16,7 @@ import { CanBeArray } from "./type";
 export function ReturnType<T extends AsyncFunction>(
   type: Constructor<CanBeArray<UnwrapPromise<ReturnType<T>>>>
 ): MethodDecorator<T> {
-  return Return((context) => {
+  return Return(async (context) => {
     const contentTypeXBodyDecoder = context.context.get(bodyDecoderSymbol) as
       | ContentTypeXBodyDecoder
       | undefined;
@@ -50,7 +50,7 @@ export function ReturnType<T extends AsyncFunction>(
     });
 
     try {
-      return decoder(context.response, type);
+      return await decoder(context.response, type);
     } catch (e) {
       throw new ClassFetchTransformResponseError(e as Error);
     }

@@ -2,6 +2,6 @@ import { AttachContext } from "./attach-context";
 
 export type FetchContext = {
   request: Request;
-  response: Response;
+  response: Response | null;
   context: AttachContext;
 };
