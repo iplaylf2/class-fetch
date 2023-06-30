@@ -44,7 +44,7 @@ export function Body<Target, Key extends keyof Target, Index extends number>(
       try {
         return (await encoder(arg)) as BodyInit;
       } catch (e) {
-        throw new ClassFetchPrettyRequestError(e as Error);
+        throw new ClassFetchPrettyRequestError("Encode failed.", { cause: e });
       }
     });
 

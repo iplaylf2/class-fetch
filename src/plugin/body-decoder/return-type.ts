@@ -52,7 +52,9 @@ export function ReturnType<T extends AsyncFunction>(
     try {
       return await decoder(context.response, type);
     } catch (e) {
-      throw new ClassFetchTransformResponseError(e as Error);
+      throw new ClassFetchTransformResponseError("Decode failed.", {
+        cause: e,
+      });
     }
   });
 }
