@@ -74,24 +74,24 @@ export class ClientFactory {
             return async (args: unknown[]) => {
               const context = handler();
 
-              const request3 = await reduce(
-                from(methodMeta.parameterMeta),
-                (request, order) =>
-                  reduce(
-                    from(order),
-                    (request, parameterMeta, index) =>
-                      reduce(
-                        from(parameterMeta),
-                        (request, pretty) =>
-                          pretty(args[index], request, context),
-                        request
-                      ),
-                    request
-                  ),
-                request2
-              );
-
               try {
+                const request3 = await reduce(
+                  from(methodMeta.parameterMeta),
+                  (request, order) =>
+                    reduce(
+                      from(order),
+                      (request, parameterMeta, index) =>
+                        reduce(
+                          from(parameterMeta),
+                          (request, pretty) =>
+                            pretty(args[index], request, context),
+                          request
+                        ),
+                      request
+                    ),
+                  request2
+                );
+
                 const response = await fetch(request3, context);
               } catch (error) {
                 const e = await reduce(
@@ -119,5 +119,4 @@ export class ClientFactory {
   }
 }
 
-const responseXRequest = new WeakMap<Response, Request>();
 const finalFetch = (request: Request) => fetch(request);
