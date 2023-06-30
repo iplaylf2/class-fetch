@@ -34,24 +34,17 @@ export class ClientFactory {
           throw new ClassFetchBuildError("Missing return");
         }
 
+        const init = {
+          ...methodMeta.init,
+          method: methodMeta.method!,
+        };
+
         const [request, pathFormat] = expression(() => {
           if (null === methodMeta.path) {
-            return [
-              new Request(classMeta.request!, {
-                ...methodMeta.init,
-                method: methodMeta.method!,
-              }),
-              null,
-            ];
+            return [new Request(classMeta.request!, init), null];
           } else {
             if ("function" === typeof methodMeta.path) {
-              return [
-                new Request(classMeta.request!, {
-                  ...methodMeta.init,
-                  method: methodMeta.method!,
-                }),
-                methodMeta.path,
-              ];
+              return [new Request(classMeta.request!, init), methodMeta.path];
             } else {
               return [
                 new Request(
@@ -59,10 +52,7 @@ export class ClientFactory {
                     ...classMeta.request!,
                     url: appendPath(classMeta.request!.url, methodMeta.path),
                   },
-                  {
-                    ...methodMeta.init,
-                    method: methodMeta.method!,
-                  }
+                  init
                 ),
                 null,
               ];
@@ -74,7 +64,7 @@ export class ClientFactory {
         const fetch = middleware.reduceRight(
           (next, middleware) => (request, context) =>
             middleware(request, (request) => next(request, context), context),
-          nextFetch as Callable<[Request, AttachContext], Promise<Response>>
+          finalFetch as Callable<[Request, AttachContext], Promise<Response>>
         );
 
         const reThrow = classMeta.reThrow.concat(methodMeta.reThrow);
@@ -130,4 +120,5 @@ export class ClientFactory {
   }
 }
 
-const nextFetch = ((request) => fetch(request)) satisfies Middleware;
+const responseXRequest = new WeakMap<Response, Request>();
+const finalFetch = (request: Request) => fetch(request);
