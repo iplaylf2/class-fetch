@@ -39,20 +39,19 @@ export class ClientFactory {
           method: methodMeta.method!,
         };
 
-        const [request, pathFormat] = expression(() => {
+        const request1 = new Request(classMeta.request!, init);
+
+        const [request2, pathFormat] = expression(() => {
           if (null === methodMeta.path) {
-            return [new Request(classMeta.request!, init), null];
+            return [request1, null];
           } else {
             if ("function" === typeof methodMeta.path) {
-              return [new Request(classMeta.request!, init), methodMeta.path];
+              return [request1, methodMeta.path];
             } else {
               return [
                 new Request(
-                  {
-                    ...classMeta.request!,
-                    url: appendPath(classMeta.request!.url, methodMeta.path),
-                  },
-                  init
+                  appendPath(request1.url, methodMeta.path),
+                  request1
                 ),
                 null,
               ];
@@ -75,7 +74,7 @@ export class ClientFactory {
             return async (args: unknown[]) => {
               const context = handler();
 
-              const request1 = await reduce(
+              const request3 = await reduce(
                 from(methodMeta.parameterMeta),
                 (request, order) =>
                   reduce(
@@ -89,11 +88,11 @@ export class ClientFactory {
                       ),
                     request
                   ),
-                request
+                request2
               );
 
               try {
-                const response = await fetch(request1, context);
+                const response = await fetch(request3, context);
               } catch (error) {
                 const e = await reduce(
                   from(reThrow),

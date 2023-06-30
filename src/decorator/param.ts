@@ -51,10 +51,7 @@ export function Param<Target, Key extends keyof Target, Index extends number>(
 
         const url = appendPath(request.url, path);
 
-        return new Request({
-          ...request,
-          url,
-        });
+        return new Request(url, request);
       } else {
         return request;
       }
