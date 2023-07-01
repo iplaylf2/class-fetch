@@ -1,5 +1,5 @@
 import { Apply } from "src/decorator/apply";
-import { ClassFetchPrettyRequestError } from "src/error";
+import { PrettyRequestError } from "src/error";
 import { ParameterDecorator } from "src/type/parameter-decorator";
 import { expression } from "src/utility/expression";
 import {
@@ -18,7 +18,7 @@ export function Body<Target, Key extends keyof Target, Index extends number>(
       | undefined;
 
     if (undefined === contentTypeXBodyEncoder) {
-      throw new ClassFetchPrettyRequestError("Missing BodyEncoder.");
+      throw new PrettyRequestError(request, "Missing BodyEncoder.");
     }
 
     const encoder = expression(() => {
@@ -33,9 +33,7 @@ export function Body<Target, Key extends keyof Target, Index extends number>(
         if (encoder) {
           return encoder;
         } else {
-          throw new ClassFetchPrettyRequestError(
-            "Missing default BodyEncoder."
-          );
+          throw new PrettyRequestError(request, "Missing default BodyEncoder.");
         }
       }
     });
@@ -44,7 +42,9 @@ export function Body<Target, Key extends keyof Target, Index extends number>(
       try {
         return (await encoder(arg)) as BodyInit;
       } catch (e) {
-        throw new ClassFetchPrettyRequestError("Encode failed.", { cause: e });
+        throw new PrettyRequestError(request, "Encode failed.", {
+          cause: e,
+        });
       }
     });
 

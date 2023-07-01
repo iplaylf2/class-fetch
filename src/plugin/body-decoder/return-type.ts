@@ -1,5 +1,5 @@
 import { Return } from "src/decorator/return";
-import { ClassFetchTransformResponseError } from "src/error";
+import { TransformResponseError } from "src/error";
 import { AsyncFunction } from "src/type/function";
 import { MethodDecorator } from "src/type/method-decorator";
 import { UnwrapPromise } from "src/type/promise";
@@ -22,12 +22,20 @@ export function ReturnType<T extends AsyncFunction>(
       | undefined;
 
     if (undefined === contentTypeXBodyDecoder) {
-      throw new ClassFetchTransformResponseError("Missing BodyDecoder.");
+      throw new TransformResponseError(
+        context.request,
+        context.response,
+        "Missing BodyDecoder."
+      );
     }
 
     const contentType = context.response.headers.get("content-type");
     if (null === contentType) {
-      throw new ClassFetchTransformResponseError("Missing content-type.");
+      throw new TransformResponseError(
+        context.request,
+        context.response,
+        "Missing content-type."
+      );
     }
 
     const decoder = expression(() => {
@@ -42,7 +50,9 @@ export function ReturnType<T extends AsyncFunction>(
         if (decoder) {
           return decoder;
         } else {
-          throw new ClassFetchTransformResponseError(
+          throw new TransformResponseError(
+            context.request,
+            context.response,
             "Missing default BodyDecoder."
           );
         }
@@ -52,9 +62,14 @@ export function ReturnType<T extends AsyncFunction>(
     try {
       return await decoder(context.response, type);
     } catch (e) {
-      throw new ClassFetchTransformResponseError("Decode failed.", {
-        cause: e,
-      });
+      throw new TransformResponseError(
+        context.request,
+        context.response,
+        "Decode failed.",
+        {
+          cause: e,
+        }
+      );
     }
   });
 }

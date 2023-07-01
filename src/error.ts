@@ -1,9 +1,37 @@
 export class ClassFetchError extends Error {}
 
-export class ClassFetchDecoratorError extends ClassFetchError {}
+export class DecoratorError extends ClassFetchError {}
 
-export class ClassFetchPrettyRequestError extends ClassFetchError {}
+export class PrettyRequestError extends ClassFetchError {
+  public constructor(
+    public readonly request: Request,
+    message?: string,
+    options?: ErrorOptions
+  ) {
+    super(message, options);
+  }
+}
 
-export class ClassFetchTransformResponseError extends ClassFetchError {}
+export class MiddlewareError extends ClassFetchError {
+  public constructor(
+    public readonly request: Request,
+    public readonly response: Response | null,
+    message?: string,
+    options?: ErrorOptions
+  ) {
+    super(message, options);
+  }
+}
 
-export class ClassFetchBuildError extends ClassFetchError {}
+export class TransformResponseError extends ClassFetchError {
+  public constructor(
+    public readonly request: Request,
+    public readonly response: Response,
+    message?: string,
+    options?: ErrorOptions
+  ) {
+    super(message, options);
+  }
+}
+
+export class BuildError extends ClassFetchError {}
