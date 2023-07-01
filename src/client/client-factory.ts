@@ -12,6 +12,18 @@ import { from, reduce } from "src/utility/async-iterable";
 import { expression } from "src/utility/expression";
 import { getClassMeta } from "./client-meta/class-meta";
 import { appendPath } from "./utility/append-path";
+import {
+  ParamContext,
+  paramContextSymbol,
+} from "./client-meta/attach-context-item";
+import {
+  ParameterMeta,
+  ParameterMetaOrder,
+} from "./client-meta/parameter-meta";
+import { MethodMeta } from "./client-meta/method-meta";
+import { Format } from "src/utility/string";
+import { ReThrow } from "./type/re-throw";
+import { Return } from "./type/return";
 
 export class ClientFactory {
   public constructor(private readonly middleware: Middleware[] = []) {}
@@ -29,7 +41,7 @@ export class ClientFactory {
       throw new BuildError("Missing request");
     }
 
-    const x = new Map(
+    const nameXMethod = new Map(
       Array.from(classMeta.method).map(([methodName, methodMeta]) => {
         if (null === methodMeta.method) {
           throw new BuildError("Missing method");
@@ -46,184 +58,266 @@ export class ClientFactory {
 
         const request1 = new Request(classMeta.request!, init);
 
-        const [request2, pathFormat] = expression(() => {
-          if (null === methodMeta.path) {
-            return [request1, null];
-          } else {
-            if ("function" === typeof methodMeta.path) {
-              return [request1, methodMeta.path];
-            } else {
-              return [
-                new Request(
-                  appendPath(request1.url, methodMeta.path),
-                  request1
-                ),
-                null,
-              ];
-            }
-          }
-        });
+        const [request2, pathFormat] = processPath(methodMeta, request1);
 
-        const middleware = classMeta.middleware.concat(methodMeta.middleware);
-        const fetch = middleware.reduceRight(
-          (next, middleware) => (request, context) =>
-            middleware(
-              request,
-              async (request) => {
-                const middlewareContext = context.get(
-                  middlewareContextSymbol
-                ) as MiddlewareContext;
-
-                middlewareContext.request.push(request);
-
-                const response = await next(request, context);
-
-                middlewareContext.request.pop();
-                middlewareContext.response = response;
-
-                return response;
-              },
-              context
-            ),
-          finalFetch
+        const fetch = processMiddleware(
+          classMeta.middleware.concat(methodMeta.middleware)
         );
 
         const reThrow = classMeta.reThrow.concat(methodMeta.reThrow);
 
-        const method = expression(() => {
-          if (pathFormat) {
-          } else {
-            return async (args: unknown[]) => {
+        const method = pathFormat
+          ? async (args: unknown[]) => {
               const context = handler();
 
               try {
-                const request3 = await expression(async () => {
-                  try {
-                    return await reduce(
-                      from(methodMeta.parameterMeta),
-                      (request, order) =>
-                        reduce(
-                          from(order),
-                          (request, parameterMeta, index) =>
-                            reduce(
-                              from(parameterMeta),
-                              (request, pretty) => {
-                                context.set(
-                                  prettyRequestContextSymbol,
-                                  request
-                                );
-
-                                return pretty(args[index], request, context);
-                              },
-                              request
-                            ),
-                          request
-                        ),
-                      request2
-                    );
-                  } catch (e) {
-                    throw new PrettyRequestError(
-                      context.get(prettyRequestContextSymbol) as Request,
-                      undefined,
-                      { cause: e }
-                    );
-                  } finally {
-                    context.delete(prettyRequestContextSymbol);
-                  }
-                });
-
-                const response = await expression(async () => {
-                  context.set(middlewareContextSymbol, {
-                    request: [request3],
-                    response: null,
-                  } satisfies MiddlewareContext);
-                  try {
-                    return await fetch(request3, context);
-                  } catch (e) {
-                    const middlewareContext = context.get(
-                      middlewareContextSymbol
-                    ) as MiddlewareContext;
-
-                    throw new MiddlewareError(
-                      middlewareContext.request[
-                        middlewareContext.request.length - 1
-                      ]!,
-                      middlewareContext.response,
-                      undefined,
-                      { cause: e }
-                    );
-                  } finally {
-                    context.delete(middlewareContextSymbol);
-                  }
-                });
-
-                return expression(async () => {
-                  try {
-                    return await methodMeta.return!({
-                      request: request3,
-                      response,
-                      context,
-                    });
-                  } catch (e) {
-                    throw new TransformResponseError(
-                      request3,
-                      response,
-                      undefined,
-                      { cause: e }
-                    );
-                  }
-                });
-              } catch (error) {
-                const fetchContext = expression(() => {
-                  switch (Object.getPrototypeOf(error)) {
-                    case PrettyRequestError: {
-                      const e = error as PrettyRequestError;
-                      return { request: e.request, response: null, context };
-                    }
-                    case MiddlewareError: {
-                      const e = error as MiddlewareError;
-                      return {
-                        request: e.request,
-                        response: e.response,
-                        context,
-                      };
-                    }
-                    case TransformResponseError:
-                      const e = error as TransformResponseError;
-                      return {
-                        request: e.request,
-                        response: e.response,
-                        context,
-                      };
-                    default:
-                      throw new ClassFetchError("Unknown error.", {
-                        cause: error,
-                      });
-                  }
-                });
-
-                const e = await reduce(
-                  from(reThrow),
-                  (error, reThrow) => reThrow(error, fetchContext),
-                  (error as Error).cause as unknown
+                const request3 = await prettyRequestWithFormat(
+                  args,
+                  request2,
+                  context,
+                  methodMeta.parameterMeta,
+                  pathFormat
                 );
 
-                throw e;
+                const response = await applyMiddleware(
+                  request3,
+                  fetch,
+                  context
+                );
+
+                const result = await transformResponse(
+                  request3,
+                  response,
+                  context,
+                  methodMeta.return!
+                );
+
+                return result;
+              } catch (error) {
+                throw await prettyError(error, reThrow, context);
+              }
+            }
+          : async (args: unknown[]) => {
+              const context = handler();
+
+              try {
+                const request3 = await prettyRequest(
+                  args,
+                  request2,
+                  context,
+                  methodMeta.parameterMeta
+                );
+
+                const response = await applyMiddleware(
+                  request3,
+                  fetch,
+                  context
+                );
+
+                const result = await transformResponse(
+                  request3,
+                  response,
+                  context,
+                  methodMeta.return!
+                );
+
+                return result;
+              } catch (error) {
+                throw await prettyError(error, reThrow, context);
               }
             };
-          }
-        });
 
-        return [
-          methodName,
-          (args: unknown[]) => {
-            return args;
-          },
-        ];
+        return [methodName, method];
       })
     );
 
-    throw "todo";
+    return new Proxy(new ctor(), {
+      get(target, p) {
+        const method = nameXMethod.get(p);
+        return method ? method : (target as any)[p];
+      },
+    });
+  }
+}
+
+function processPath(
+  methodMeta: MethodMeta,
+  request: Request
+): [Request, Format | null] {
+  return null === methodMeta.path
+    ? [request, null]
+    : "function" === typeof methodMeta.path
+    ? [request, methodMeta.path]
+    : [new Request(appendPath(request.url, methodMeta.path), request), null];
+}
+
+function processMiddleware(middleware: Middleware[]) {
+  return middleware.reduceRight(
+    (next, middleware) => (request, context) =>
+      middleware(
+        request,
+        async (request) => {
+          const middlewareContext = context.get(
+            middlewareContextSymbol
+          ) as MiddlewareContext;
+
+          middlewareContext.request.push(request);
+
+          const response = await next(request, context);
+
+          middlewareContext.request.pop();
+          middlewareContext.response = response;
+
+          return response;
+        },
+        context
+      ),
+    finalFetch
+  );
+}
+
+function prettyError(
+  error: unknown,
+  reThrow: ReThrow[],
+  context: AttachContext
+) {
+  const fetchContext = expression(() => {
+    switch (Object.getPrototypeOf(error)) {
+      case PrettyRequestError: {
+        const e = error as PrettyRequestError;
+        return { request: e.request, response: null, context };
+      }
+      case MiddlewareError: {
+        const e = error as MiddlewareError;
+        return {
+          request: e.request,
+          response: e.response,
+          context,
+        };
+      }
+      case TransformResponseError:
+        const e = error as TransformResponseError;
+        return {
+          request: e.request,
+          response: e.response,
+          context,
+        };
+      default:
+        throw new ClassFetchError("Unknown error.", {
+          cause: error,
+        });
+    }
+  });
+
+  return reduce(
+    from(reThrow),
+    (error, reThrow) => reThrow(error, fetchContext),
+    (error as Error).cause as unknown
+  );
+}
+
+async function prettyRequest(
+  args: unknown[],
+  request: Request,
+  context: AttachContext,
+  parameterMeta: ParameterMeta[][]
+) {
+  try {
+    return await reduce(
+      from(parameterMeta),
+      (request, order) =>
+        reduce(
+          from(order),
+          (request, parameterMeta, index) =>
+            reduce(
+              from(parameterMeta),
+              (request, pretty) => {
+                context.set(prettyRequestContextSymbol, request);
+
+                return pretty(args[index], request, context);
+              },
+              request
+            ),
+          request
+        ),
+      request
+    );
+  } catch (e) {
+    throw new PrettyRequestError(
+      context.get(prettyRequestContextSymbol) as Request,
+      undefined,
+      { cause: e }
+    );
+  } finally {
+    context.delete(prettyRequestContextSymbol);
+  }
+}
+
+function prettyRequestWithFormat(
+  args: unknown[],
+  request: Request,
+  context: AttachContext,
+  parameterMeta: ParameterMeta[][],
+  pathFormat: Format
+) {
+  const applyList = parameterMeta[ParameterMetaOrder.Apply] ?? [];
+  context.set(paramContextSymbol, {
+    pathFormat: pathFormat,
+    paramRecord: {},
+    finishHandler: applyList[applyList.length - 1],
+  } satisfies ParamContext);
+
+  try {
+    return prettyRequest(args, request, context, parameterMeta);
+  } finally {
+    context.delete(paramContextSymbol);
+  }
+}
+
+async function applyMiddleware(
+  request: Request,
+  fetch: (request: Request, context: AttachContext) => Promise<Response>,
+  context: AttachContext
+) {
+  context.set(middlewareContextSymbol, {
+    request: [request],
+    response: null,
+  } satisfies MiddlewareContext);
+
+  try {
+    return await fetch(request, context);
+  } catch (e) {
+    const middlewareContext = context.get(
+      middlewareContextSymbol
+    ) as MiddlewareContext;
+
+    throw new MiddlewareError(
+      middlewareContext.request[middlewareContext.request.length - 1]!,
+      middlewareContext.response,
+      undefined,
+      { cause: e }
+    );
+  } finally {
+    context.delete(middlewareContextSymbol);
+  }
+}
+
+async function transformResponse(
+  request3: Request,
+  response: Response,
+  context: AttachContext,
+  returnX: Return
+) {
+  try {
+    return await returnX({
+      request: request3,
+      response,
+      context,
+    });
+  } catch (e) {
+    throw new TransformResponseError(request3, response, undefined, {
+      cause: e,
+    });
   }
 }
 

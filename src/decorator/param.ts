@@ -1,7 +1,7 @@
 import {
   ParamRecord,
-  ParamType,
-  paramSymbol,
+  ParamContext,
+  paramContextSymbol,
 } from "src/client/client-meta/attach-context-item";
 import { getClassMeta, getMethodMeta } from "src/client/client-meta/class-meta";
 import { getParameterMeta } from "src/client/client-meta/method-meta";
@@ -36,7 +36,7 @@ export function Param<Target, Key extends keyof Target, Index extends number>(
       request,
       context
     ) => {
-      const param = context.get(paramSymbol) as ParamType | undefined;
+      const param = context.get(paramContextSymbol) as ParamContext | undefined;
 
       if (undefined === param) {
         return request;

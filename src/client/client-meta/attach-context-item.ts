@@ -1,8 +1,8 @@
 import { Format } from "src/utility/string";
 
-export const paramSymbol = Symbol("param");
+export const paramContextSymbol = Symbol("param");
 export type ParamRecord = Record<string, string>;
-export type ParamType = {
+export type ParamContext = {
   pathFormat: Format;
   paramRecord: ParamRecord;
   finishHandler: unknown;
