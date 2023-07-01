@@ -1,6 +1,6 @@
 import {
-  ParamRecord,
   ParamContext,
+  ParamRecord,
   paramContextSymbol,
 } from "src/client/client-meta/attach-context-item";
 import { getClassMeta, getMethodMeta } from "src/client/client-meta/class-meta";
