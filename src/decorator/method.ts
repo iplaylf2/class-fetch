@@ -15,8 +15,8 @@ export function Method<T extends AsyncFunction>(
 ): MethodDecorator<T>;
 export function Method<T extends AsyncFunction>(
   method: string,
-  path?: string | Format,
-  init?: RequestInit
+  path: string | Format,
+  init: RequestInit
 ): MethodDecorator<T>;
 export function Method<T extends AsyncFunction>(
   method: string,
@@ -24,14 +24,13 @@ export function Method<T extends AsyncFunction>(
   param2?: RequestInit
 ): MethodDecorator<T> {
   const [path, init] = expression(() => {
-    if (undefined === param1) {
-      return [null, null];
-    } else {
-      if (undefined === param2) {
-        return [param1 as string | Format, null];
-      } else {
-        return [param1 as string | Format, param2 as RequestInit];
-      }
+    switch (typeof param1) {
+      case "undefined":
+        return [null, null];
+      case "object":
+        return [null, param1];
+      default:
+        return [param1, param2 ?? null];
     }
   });
 
