@@ -1,11 +1,5 @@
-import { ClientFactory } from "src/client/client-factory";
-import { AttachContext } from "src/client/type/attach-context";
+import { factory } from "./factory";
 
-export function build<T extends {}>(
-  ctor: new () => T,
-  handler: () => AttachContext = () => new Map()
-): T {
-  return factory.build(ctor, handler);
+export function build<T extends {}>(ctor: new () => T): T {
+  return factory.build(ctor);
 }
-
-const factory = new ClientFactory();

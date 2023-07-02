@@ -26,16 +26,25 @@ import { Return } from "./type/return";
 import { appendPath } from "./utility/append-path";
 
 export class ClientFactory {
-  public constructor(private readonly middleware: Middleware[] = []) {}
+  public constructor(
+    private readonly middleware: Middleware[] = [],
+    private readonly context: Map<unknown, unknown> = new Map()
+  ) {}
 
   public use(...middleware: Middleware[]): ClientFactory {
-    return new ClientFactory(this.middleware.concat(middleware));
+    return new ClientFactory(this.middleware.concat(middleware), this.context);
   }
 
-  public build<T extends {}>(
-    ctor: new () => T,
-    handler: () => AttachContext
-  ): T {
+  public append(context: Map<unknown, unknown>) {
+    const newContext = new Map(this.context);
+    for (const [k, v] of context) {
+      newContext.set(k, v);
+    }
+
+    return new ClientFactory(this.middleware, newContext);
+  }
+
+  public build<T extends {}>(ctor: new () => T): T {
     const classMeta = getClassMeta(ctor);
     if (null === classMeta.request) {
       throw new BuildError("Missing request");
@@ -61,14 +70,14 @@ export class ClientFactory {
         const [request2, pathFormat] = processPath(methodMeta, request1);
 
         const fetch = processMiddleware(
-          classMeta.middleware.concat(methodMeta.middleware)
+          this.middleware.concat(classMeta.middleware, methodMeta.middleware)
         );
 
         const reThrow = classMeta.reThrow.concat(methodMeta.reThrow);
 
         const method = pathFormat
           ? async (args: unknown[]) => {
-              const context = handler();
+              const context = new Map(this.context);
 
               try {
                 const request3 = await prettyRequestWithFormat(
@@ -98,7 +107,7 @@ export class ClientFactory {
               }
             }
           : async (args: unknown[]) => {
-              const context = handler();
+              const context = new Map(this.context);
 
               try {
                 const request3 = await prettyRequest(
