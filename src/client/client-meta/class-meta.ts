@@ -10,14 +10,14 @@ export function getClassMeta(x: Newable): ClassMeta {
     return meta;
   } else {
     const superClass = getSuperClass(x);
-    if (superClass) {
-      const meta = getClassMeta(superClass);
-      return cloneClassMeta(meta);
-    } else {
-      const meta = createClassMeta();
-      classXMeta.set(x, meta);
-      return meta;
-    }
+
+    const meta = superClass
+      ? cloneClassMeta(getClassMeta(superClass))
+      : createClassMeta();
+
+    classXMeta.set(x, meta);
+
+    return meta;
   }
 }
 

@@ -40,11 +40,10 @@ export function Method<T extends AsyncFunction>(
 
     if (null === methodMeta.method) {
       methodMeta.method = method;
+      methodMeta.path = path;
+      methodMeta.init = init;
     } else {
       throw new DecoratorError("Method cannot be redefined.");
     }
-
-    methodMeta.path = path;
-    methodMeta.init = init;
   };
 }
