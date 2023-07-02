@@ -1,4 +1,4 @@
-import { Newable } from "src/type/function";
+import { Newable } from "../../type/function";
 
 export const bodyDecoderSymbol = Symbol("body-decoder");
 export type Constructor<T> = Newable<any, T | { valueOf: () => T }>;

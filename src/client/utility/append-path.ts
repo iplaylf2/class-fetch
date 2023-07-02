@@ -1,4 +1,4 @@
-import { expression } from "src/utility/expression";
+import { expression } from "../../utility/expression";
 
 export function appendPath(url: string, path: string) {
   const _url = new URL(url);

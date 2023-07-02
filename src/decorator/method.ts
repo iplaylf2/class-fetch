@@ -1,9 +1,9 @@
-import { getClassMeta, getMethodMeta } from "src/client/client-meta/class-meta";
-import { DecoratorError } from "src/error";
-import { AsyncFunction, Newable } from "src/type/function";
-import { MethodDecorator } from "src/type/method-decorator";
-import { expression } from "src/utility/expression";
-import { Format } from "src/utility/string";
+import { getClassMeta, getMethodMeta } from "../client/client-meta/class-meta";
+import { DecoratorError } from "../error";
+import { AsyncFunction, Newable } from "../type/function";
+import { MethodDecorator } from "../type/method-decorator";
+import { expression } from "../utility/expression";
+import { Format } from "../utility/string";
 
 export function Method<T extends AsyncFunction>(
   method: string,

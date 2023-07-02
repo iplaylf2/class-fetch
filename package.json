@@ -5,6 +5,9 @@
   "main": "class-fetch.js",
   "types": "class-fetch.d.js",
   "scripts": {
+    "build": "gulp build",
+    "pack": "gulp pack",
+    "publish-npm": "gulp pack && npm publish ./package",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -34,6 +37,9 @@
     "eslint": "^8.42.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
+    "gulp": "^4.0.2",
+    "gulp-sourcemaps": "^3.0.0",
+    "gulp-typescript": "6.0.0-alpha.1",
     "prettier": "^2.8.8",
     "typescript": "^5.1.3"
   }

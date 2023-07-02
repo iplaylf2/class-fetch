@@ -1,16 +1,16 @@
 import fetch from "cross-fetch";
-import { AttachContext } from "src/client/type/attach-context";
-import { Middleware } from "src/client/type/middleware";
+import { AttachContext } from "../client/type/attach-context";
+import { Middleware } from "../client/type/middleware";
 import {
   BuildError,
   ClassFetchError,
   MiddlewareError,
   PrettyRequestError,
   TransformResponseError,
-} from "src/error";
-import { from, reduce } from "src/utility/async-iterable";
-import { expression } from "src/utility/expression";
-import { Format } from "src/utility/string";
+} from "../error";
+import { from, reduce } from "../utility/async-iterable";
+import { expression } from "../utility/expression";
+import { Format } from "../utility/string";
 import {
   ParamContext,
   paramContextSymbol,
@@ -330,7 +330,8 @@ async function transformResponse(
   }
 }
 
-const finalFetch = (request: Request, context: AttachContext) => fetch(request);
+const finalFetch = (request: Request, _context: AttachContext) =>
+  fetch(request);
 
 const prettyRequestContextSymbol = Symbol("pretty-request-context");
 

@@ -1,8 +1,8 @@
-import { getClassMeta, getMethodMeta } from "src/client/client-meta/class-meta";
-import { Return } from "src/client/type/return";
-import { DecoratorError } from "src/error";
-import { AsyncFunction, Newable } from "src/type/function";
-import { MethodDecorator } from "src/type/method-decorator";
+import { getClassMeta, getMethodMeta } from "../client/client-meta/class-meta";
+import { Return } from "../client/type/return";
+import { DecoratorError } from "../error";
+import { AsyncFunction, Newable } from "../type/function";
+import { MethodDecorator } from "../type/method-decorator";
 
 export function Return<T extends AsyncFunction>(
   handler: Return

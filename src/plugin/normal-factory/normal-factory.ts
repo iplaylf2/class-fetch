@@ -1,5 +1,5 @@
-import { ClientFactory } from "src/client/client-factory";
-import { Middleware } from "src/client/type/middleware";
+import { ClientFactory } from "../../client/client-factory";
+import { Middleware } from "../../client/type/middleware";
 import {
   bodyDecoderSymbol,
   defaultBodyDecoderSymbol,

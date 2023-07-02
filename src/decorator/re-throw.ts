@@ -1,7 +1,7 @@
-import { getClassMeta, getMethodMeta } from "src/client/client-meta/class-meta";
-import { ReThrow } from "src/client/type/re-throw";
-import { AsyncFunction, Newable } from "src/type/function";
-import { MethodDecorator } from "src/type/method-decorator";
+import { getClassMeta, getMethodMeta } from "../client/client-meta/class-meta";
+import { ReThrow } from "../client/type/re-throw";
+import { AsyncFunction, Newable } from "../type/function";
+import { MethodDecorator } from "../type/method-decorator";
 
 export function ReThrow<T extends AsyncFunction>(
   handler: ReThrow

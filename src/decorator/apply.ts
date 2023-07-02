@@ -1,9 +1,9 @@
-import { getClassMeta, getMethodMeta } from "src/client/client-meta/class-meta";
-import { getParameterMeta } from "src/client/client-meta/method-meta";
-import { ParameterMetaOrder } from "src/client/client-meta/parameter-meta";
-import { PrettyRequest } from "src/client/type/pretty-request";
-import { Newable } from "src/type/function";
-import { ParameterDecorator } from "src/type/parameter-decorator";
+import { getClassMeta, getMethodMeta } from "../client/client-meta/class-meta";
+import { getParameterMeta } from "../client/client-meta/method-meta";
+import { ParameterMetaOrder } from "../client/client-meta/parameter-meta";
+import { PrettyRequest } from "../client/type/pretty-request";
+import { Newable } from "../type/function";
+import { ParameterDecorator } from "../type/parameter-decorator";
 
 export function Apply<
   Target,

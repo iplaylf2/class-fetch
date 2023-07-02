@@ -1,6 +1,6 @@
-import { Middleware } from "src/client/type/middleware";
-import { Newable } from "src/type/function";
-import { getSuperClass } from "src/utility/class";
+import { Middleware } from "../../client/type/middleware";
+import { Newable } from "../../type/function";
+import { getSuperClass } from "../../utility/class";
 import { ReThrow } from "../type/re-throw";
 import { MethodMeta, cloneMethodMeta, createMethodMeta } from "./method-meta";
 

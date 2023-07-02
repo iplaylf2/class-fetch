@@ -1,4 +1,4 @@
-import { ParameterDecorator } from "src/type/parameter-decorator";
+import { ParameterDecorator } from "../type/parameter-decorator";
 import { Apply } from "./apply";
 
 export function RawBody<

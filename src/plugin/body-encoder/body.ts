@@ -1,7 +1,7 @@
-import { Apply } from "src/decorator/apply";
-import { PrettyRequestError } from "src/error";
-import { ParameterDecorator } from "src/type/parameter-decorator";
-import { expression } from "src/utility/expression";
+import { Apply } from "../../decorator/apply";
+import { PrettyRequestError } from "../../error";
+import { ParameterDecorator } from "../../type/parameter-decorator";
+import { expression } from "../../utility/expression";
 import {
   BodyEncoder,
   ContentTypeXBodyEncoder,

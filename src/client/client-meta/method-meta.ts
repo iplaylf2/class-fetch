@@ -1,8 +1,8 @@
-import { Middleware } from "src/client/type/middleware";
-import { Format } from "src/utility/string";
+import { Middleware } from "../../client/type/middleware";
+import { expression } from "../../utility/expression";
+import { Format } from "../../utility/string";
 import { ReThrow } from "../type/re-throw";
 import { Return } from "../type/return";
-import { expression } from "src/utility/expression";
 import { ParameterMeta } from "./parameter-meta";
 
 export function createMethodMeta(): MethodMeta {

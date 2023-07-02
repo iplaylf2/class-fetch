@@ -1,5 +1,5 @@
-import { getClassMeta } from "src/client/client-meta/class-meta";
-import { DecoratorError } from "src/error";
+import { getClassMeta } from "../client/client-meta/class-meta";
+import { DecoratorError } from "../error";
 
 export function Fetch(
   info: RequestInfo | URL,
