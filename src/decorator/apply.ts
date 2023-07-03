@@ -1,4 +1,4 @@
-import { Newable } from "src/type/function";
+import { getConstructor } from "src/utility/class";
 import { getClassMeta, getMethodMeta } from "../client/client-meta/class-meta";
 import { getParameterMeta } from "../client/client-meta/method-meta";
 import { ParameterMetaOrder } from "../client/client-meta/parameter-meta";
@@ -14,7 +14,7 @@ export function Apply<
   handler: PrettyRequest<T>
 ): InstanceParameterDecorator<Target, Key, Index, T> {
   return function (target, propertyKey, parameterIndex) {
-    const classMeta = getClassMeta(target as Newable);
+    const classMeta = getClassMeta(getConstructor(target));
     const methodMeta = getMethodMeta(classMeta, propertyKey as string);
     const parameterMeta = getParameterMeta(
       methodMeta,

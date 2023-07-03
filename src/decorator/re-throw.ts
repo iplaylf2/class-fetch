@@ -1,3 +1,4 @@
+import { getConstructor } from "src/utility/class";
 import { getClassMeta, getMethodMeta } from "../client/client-meta/class-meta";
 import { ReThrow } from "../client/type/re-throw";
 import { AsyncFunction, Newable } from "../type/function";
@@ -11,7 +12,7 @@ export function ReThrow<T, M extends AsyncFunction>(
       const classMeta = getClassMeta(target as Newable);
       classMeta.reThrow.push(handler);
     } else {
-      const classMeta = getClassMeta(target as Newable);
+      const classMeta = getClassMeta(getConstructor(target));
       const methodMeta = getMethodMeta(classMeta, methodName);
       methodMeta.reThrow.push(handler);
     }

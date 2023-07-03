@@ -1,3 +1,4 @@
+import { getConstructor } from "src/utility/class";
 import {
   ParamContext,
   ParamRecord,
@@ -8,7 +9,6 @@ import { getParameterMeta } from "../client/client-meta/method-meta";
 import { ParameterMetaOrder } from "../client/client-meta/parameter-meta";
 import { PrettyRequest } from "../client/type/pretty-request";
 import { appendPath } from "../client/utility/append-path";
-import { Newable } from "../type/function";
 import { InstanceParameterDecorator } from "../type/instance-parameter-decorator";
 
 export function Param<
@@ -23,7 +23,7 @@ export function Param<Target, Key extends keyof Target, Index extends number>(
   key?: string
 ): InstanceParameterDecorator<Target, Key, Index, any> {
   return function (target, propertyKey, parameterIndex) {
-    const classMeta = getClassMeta(target as Newable);
+    const classMeta = getClassMeta(getConstructor(target));
     const methodMeta = getMethodMeta(classMeta, propertyKey as string);
     const parameterMeta = getParameterMeta(
       methodMeta,

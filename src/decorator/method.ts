@@ -1,6 +1,7 @@
+import { getConstructor } from "src/utility/class";
 import { getClassMeta, getMethodMeta } from "../client/client-meta/class-meta";
 import { DecoratorError } from "../error";
-import { AsyncFunction, Newable } from "../type/function";
+import { AsyncFunction } from "../type/function";
 import { InstanceMethodDecorator } from "../type/instance-method-decorator";
 import { expression } from "../utility/expression";
 import { Format } from "../utility/string";
@@ -35,7 +36,7 @@ export function Method<T, M extends AsyncFunction>(
   });
 
   return function (target, propertyKey) {
-    const classMeta = getClassMeta(target as Newable);
+    const classMeta = getClassMeta(getConstructor(target));
     const methodMeta = getMethodMeta(classMeta, propertyKey);
 
     if (null === methodMeta.method) {

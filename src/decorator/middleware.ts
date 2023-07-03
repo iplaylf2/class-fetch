@@ -1,3 +1,4 @@
+import { getConstructor } from "src/utility/class";
 import { getClassMeta, getMethodMeta } from "../client/client-meta/class-meta";
 import { Middleware } from "../client/type/middleware";
 import { AsyncFunction, Newable } from "../type/function";
@@ -11,7 +12,7 @@ export function Middleware<T, M extends AsyncFunction>(
       const classMeta = getClassMeta(target as Newable);
       classMeta.middleware.push(...middleware);
     } else {
-      const classMeta = getClassMeta(target as Newable);
+      const classMeta = getClassMeta(getConstructor(target));
       const methodMeta = getMethodMeta(classMeta, methodName);
       methodMeta.middleware.push(...middleware);
     }
