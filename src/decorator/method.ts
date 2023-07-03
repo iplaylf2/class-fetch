@@ -1,8 +1,8 @@
-import { getConstructor } from "src/utility/class";
 import { getClassMeta, getMethodMeta } from "../client/client-meta/class-meta";
 import { DecoratorError } from "../error";
 import { AsyncFunction } from "../type/function";
 import { InstanceMethodDecorator } from "../type/instance-method-decorator";
+import { getConstructor } from "../utility/class";
 import { expression } from "../utility/expression";
 import { Format } from "../utility/string";
 

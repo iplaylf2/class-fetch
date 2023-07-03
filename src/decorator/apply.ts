@@ -1,9 +1,9 @@
-import { getConstructor } from "src/utility/class";
 import { getClassMeta, getMethodMeta } from "../client/client-meta/class-meta";
 import { getParameterMeta } from "../client/client-meta/method-meta";
 import { ParameterMetaOrder } from "../client/client-meta/parameter-meta";
 import { PrettyRequest } from "../client/type/pretty-request";
 import { InstanceParameterDecorator } from "../type/instance-parameter-decorator";
+import { getConstructor } from "../utility/class";
 
 export function Apply<
   Target,

@@ -1,8 +1,8 @@
-import { getConstructor } from "src/utility/class";
 import { getClassMeta, getMethodMeta } from "../client/client-meta/class-meta";
 import { Middleware } from "../client/type/middleware";
 import { AsyncFunction, Newable } from "../type/function";
 import { InstanceMethodDecorator } from "../type/instance-method-decorator";
+import { getConstructor } from "../utility/class";
 
 export function Middleware<T, M extends AsyncFunction>(
   ...middleware: Middleware[]

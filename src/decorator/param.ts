@@ -1,4 +1,3 @@
-import { getConstructor } from "src/utility/class";
 import {
   ParamContext,
   ParamRecord,
@@ -10,6 +9,7 @@ import { ParameterMetaOrder } from "../client/client-meta/parameter-meta";
 import { PrettyRequest } from "../client/type/pretty-request";
 import { appendPath } from "../client/utility/append-path";
 import { InstanceParameterDecorator } from "../type/instance-parameter-decorator";
+import { getConstructor } from "../utility/class";
 
 export function Param<
   Target,
