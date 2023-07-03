@@ -18,5 +18,5 @@ export function appendPath(url: string, path: string) {
     }
   });
 
-  return new URL(newPath, _url).toString();
+  return new URL(newPath, _url);
 }

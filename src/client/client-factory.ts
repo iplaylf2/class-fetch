@@ -76,7 +76,7 @@ export class ClientFactory {
         const reThrow = classMeta.reThrow.concat(methodMeta.reThrow);
 
         const method = pathFormat
-          ? async (args: unknown[]) => {
+          ? async (...args: unknown[]) => {
               const context = new Map(this.context);
 
               try {
@@ -106,7 +106,7 @@ export class ClientFactory {
                 throw await prettyError(error, reThrow, context);
               }
             }
-          : async (args: unknown[]) => {
+          : async (...args: unknown[]) => {
               const context = new Map(this.context);
 
               try {
@@ -192,11 +192,11 @@ function prettyError(
 ) {
   const fetchContext = expression(() => {
     switch (Object.getPrototypeOf(error)) {
-      case PrettyRequestError: {
+      case PrettyRequestError.prototype: {
         const e = error as PrettyRequestError;
         return { request: e.request, response: null, context };
       }
-      case MiddlewareError: {
+      case MiddlewareError.prototype: {
         const e = error as MiddlewareError;
         return {
           request: e.request,
@@ -204,7 +204,7 @@ function prettyError(
           context,
         };
       }
-      case TransformResponseError:
+      case TransformResponseError.prototype:
         const e = error as TransformResponseError;
         return {
           request: e.request,
@@ -233,10 +233,10 @@ async function prettyRequest(
 ) {
   try {
     return await reduce(
-      from(parameterMeta),
+      from(parameterMeta.filter((x) => x)),
       (request, order) =>
         reduce(
-          from(order),
+          from(order.filter((x) => x)),
           (request, parameterMeta, index) =>
             reduce(
               from(parameterMeta),
@@ -319,6 +319,10 @@ async function transformResponse(
   returnX: Return
 ) {
   try {
+    if (!response.ok) {
+      throw new TransformResponseError(request3, response, "Response no ok.");
+    }
+
     return await returnX({
       request: request3,
       response,
@@ -332,7 +336,7 @@ async function transformResponse(
 }
 
 const finalFetch = (request: Request, _context: AttachContext) =>
-  fetch(request);
+  fetch(request.url, request); // fix: Only absolute URLs are supported
 
 const prettyRequestContextSymbol = Symbol("pretty-request-context");
 

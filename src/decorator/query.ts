@@ -20,7 +20,7 @@ export function Query<Target, Key extends keyof Target, Index extends number>(
         url.searchParams.append(name, value);
       }
 
-      return new Request(url.toString(), request);
+      return new Request(url, request);
     });
   } else {
     return Apply((arg: string, request) => {
@@ -28,7 +28,7 @@ export function Query<Target, Key extends keyof Target, Index extends number>(
 
       url.searchParams.append(name, arg);
 
-      return new Request(url.toString(), request);
+      return new Request(url, request);
     });
   }
 }
