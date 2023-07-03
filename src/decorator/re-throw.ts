@@ -1,11 +1,11 @@
 import { getClassMeta, getMethodMeta } from "../client/client-meta/class-meta";
 import { ReThrow } from "../client/type/re-throw";
 import { AsyncFunction, Newable } from "../type/function";
-import { MethodDecorator } from "../type/method-decorator";
+import { InstanceMethodDecorator } from "../type/instance-method-decorator";
 
-export function ReThrow<T extends AsyncFunction>(
+export function ReThrow<T, M extends AsyncFunction>(
   handler: ReThrow
-): ClassDecorator & MethodDecorator<T> {
+): ClassDecorator & InstanceMethodDecorator<T, M> {
   return function (target, methodName) {
     if (undefined === methodName) {
       const classMeta = getClassMeta(target as Newable);
@@ -15,5 +15,5 @@ export function ReThrow<T extends AsyncFunction>(
       const methodMeta = getMethodMeta(classMeta, methodName);
       methodMeta.reThrow.push(handler);
     }
-  } as ClassDecorator & MethodDecorator<T>;
+  } as ClassDecorator & InstanceMethodDecorator<T, M>;
 }

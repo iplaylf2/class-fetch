@@ -1,17 +1,17 @@
-import { ParameterDecorator } from "../type/parameter-decorator";
+import { InstanceParameterDecorator } from "../type/instance-parameter-decorator";
 import { Apply } from "./apply";
 
 export function Header<
   Target,
   Key extends keyof Target,
   Index extends number
->(): ParameterDecorator<Target, Key, Index, HeadersInit>;
+>(): InstanceParameterDecorator<Target, Key, Index, HeadersInit>;
 export function Header<Target, Key extends keyof Target, Index extends number>(
   name: string
-): ParameterDecorator<Target, Key, Index, string>;
+): InstanceParameterDecorator<Target, Key, Index, string>;
 export function Header<Target, Key extends keyof Target, Index extends number>(
   name?: string
-): ParameterDecorator<Target, Key, Index, any> {
+): InstanceParameterDecorator<Target, Key, Index, any> {
   if (undefined === name) {
     return Apply((arg: Record<string, string>, request) => {
       const headers = new Headers(request.headers);

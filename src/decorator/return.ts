@@ -2,11 +2,11 @@ import { getClassMeta, getMethodMeta } from "../client/client-meta/class-meta";
 import { Return } from "../client/type/return";
 import { DecoratorError } from "../error";
 import { AsyncFunction, Newable } from "../type/function";
-import { MethodDecorator } from "../type/method-decorator";
+import { InstanceMethodDecorator } from "../type/instance-method-decorator";
 
-export function Return<T extends AsyncFunction>(
+export function Return<T, M extends AsyncFunction>(
   handler: Return
-): MethodDecorator<T> {
+): InstanceMethodDecorator<T, M> {
   return function (target, propertyKey) {
     const classMeta = getClassMeta(target as Newable);
     const methodMeta = getMethodMeta(classMeta, propertyKey);

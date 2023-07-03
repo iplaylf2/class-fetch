@@ -1,6 +1,6 @@
 import { Apply } from "../../decorator/apply";
 import { PrettyRequestError } from "../../error";
-import { ParameterDecorator } from "../../type/parameter-decorator";
+import { InstanceParameterDecorator } from "../../type/instance-parameter-decorator";
 import { expression } from "../../utility/expression";
 import {
   BodyEncoder,
@@ -11,7 +11,7 @@ import {
 
 export function Body<Target, Key extends keyof Target, Index extends number>(
   contentType: string
-): ParameterDecorator<Target, Key, Index, any> {
+): InstanceParameterDecorator<Target, Key, Index, any> {
   return Apply(async (arg: unknown, request, context) => {
     const contentTypeXBodyEncoder = context.get(bodyEncoderSymbol) as
       | ContentTypeXBodyEncoder

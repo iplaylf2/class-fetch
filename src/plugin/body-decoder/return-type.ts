@@ -1,7 +1,7 @@
 import { Return } from "../../decorator/return";
 import { TransformResponseError } from "../../error";
 import { AsyncFunction } from "../../type/function";
-import { MethodDecorator } from "../../type/method-decorator";
+import { InstanceMethodDecorator } from "../../type/instance-method-decorator";
 import { UnwrapPromise } from "../../type/promise";
 import { expression } from "../../utility/expression";
 import {
@@ -13,9 +13,9 @@ import {
 } from "./attach-context-item";
 import { CanBeArray } from "./type";
 
-export function ReturnType<T extends AsyncFunction>(
-  type: Constructor<CanBeArray<UnwrapPromise<ReturnType<T>>>>
-): MethodDecorator<T> {
+export function ReturnType<T, M extends AsyncFunction>(
+  type: Constructor<CanBeArray<UnwrapPromise<ReturnType<M>>>>
+): InstanceMethodDecorator<T, M> {
   return Return(async (context) => {
     const contentTypeXBodyDecoder = context.context.get(bodyDecoderSymbol) as
       | ContentTypeXBodyDecoder

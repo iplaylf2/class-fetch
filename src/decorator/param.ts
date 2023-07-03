@@ -9,19 +9,19 @@ import { ParameterMetaOrder } from "../client/client-meta/parameter-meta";
 import { PrettyRequest } from "../client/type/pretty-request";
 import { appendPath } from "../client/utility/append-path";
 import { Newable } from "../type/function";
-import { ParameterDecorator } from "../type/parameter-decorator";
+import { InstanceParameterDecorator } from "../type/instance-parameter-decorator";
 
 export function Param<
   Target,
   Key extends keyof Target,
   Index extends number
->(): ParameterDecorator<Target, Key, Index, ParamRecord>;
+>(): InstanceParameterDecorator<Target, Key, Index, ParamRecord>;
 export function Param<Target, Key extends keyof Target, Index extends number>(
   key: string
-): ParameterDecorator<Target, Key, Index, string>;
+): InstanceParameterDecorator<Target, Key, Index, string>;
 export function Param<Target, Key extends keyof Target, Index extends number>(
   key?: string
-): ParameterDecorator<Target, Key, Index, any> {
+): InstanceParameterDecorator<Target, Key, Index, any> {
   return function (target, propertyKey, parameterIndex) {
     const classMeta = getClassMeta(target as Newable);
     const methodMeta = getMethodMeta(classMeta, propertyKey as string);
@@ -64,5 +64,5 @@ export function Param<Target, Key extends keyof Target, Index extends number>(
             handleRecord({ [key]: arg }, request, context);
 
     parameterMeta.push(handler);
-  } as ParameterDecorator<Target, Key, Index, any>;
+  } as InstanceParameterDecorator<Target, Key, Index, any>;
 }

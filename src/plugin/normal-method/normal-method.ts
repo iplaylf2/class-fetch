@@ -1,6 +1,6 @@
 import { Method } from "../../decorator/method";
 import { AsyncFunction } from "../../type/function";
-import { MethodDecorator } from "../../type/method-decorator";
+import { InstanceMethodDecorator } from "../../type/instance-method-decorator";
 import { Format } from "../../utility/string";
 
 export const Delete = defineMethod("delete");
@@ -9,12 +9,18 @@ export const Post = defineMethod("post");
 export const Put = defineMethod("put");
 
 export type FixedMethod = {
-  <T extends AsyncFunction>(path?: string | Format): MethodDecorator<T>;
-  <T extends AsyncFunction>(init?: RequestInit): MethodDecorator<T>;
-  <T extends AsyncFunction>(
+  <T, M extends AsyncFunction>(path?: string | Format): InstanceMethodDecorator<
+    T,
+    M
+  >;
+  <T, M extends AsyncFunction>(init?: RequestInit): InstanceMethodDecorator<
+    T,
+    M
+  >;
+  <T, M extends AsyncFunction>(
     path: string | Format,
     init: RequestInit
-  ): MethodDecorator<T>;
+  ): InstanceMethodDecorator<T, M>;
 };
 
 function defineMethod(method: string): FixedMethod {
