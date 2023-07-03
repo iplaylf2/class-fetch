@@ -262,22 +262,23 @@ async function prettyRequest(
   }
 }
 
-function prettyRequestWithFormat(
+async function prettyRequestWithFormat(
   args: unknown[],
   request: Request,
   context: AttachContext,
   parameterMeta: ParameterMeta[][],
   pathFormat: Format
 ) {
-  const applyList = parameterMeta[ParameterMetaOrder.Apply] ?? [];
+  const indexList = parameterMeta[ParameterMetaOrder.Param] ?? [];
+  const lastHandlerList = indexList[indexList.length - 1] ?? [];
   context.set(paramContextSymbol, {
     pathFormat: pathFormat,
     paramRecord: {},
-    finishHandler: applyList[applyList.length - 1],
+    finishHandler: lastHandlerList[lastHandlerList.length - 1],
   } satisfies ParamContext);
 
   try {
-    return prettyRequest(args, request, context, parameterMeta);
+    return await prettyRequest(args, request, context, parameterMeta);
   } finally {
     context.delete(paramContextSymbol);
   }

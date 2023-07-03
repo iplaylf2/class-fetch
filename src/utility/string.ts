@@ -9,7 +9,7 @@ export function t<const T extends string[]>(
   const last = template[template.length - 1] ?? "";
   return (x) =>
     Array.from(keys.entries()).reduce(
-      (r, [index, key]) => `${r}${template[index]}${x[key as T[number]]}}`,
+      (r, [index, key]) => `${r}${template[index]}${x[key as T[number]]}`,
       ""
     ) + last;
 }
