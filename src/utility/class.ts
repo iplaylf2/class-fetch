@@ -1,6 +1,6 @@
 import { Newable } from "../type/function";
 
-export function getConstructor(prototype: any) {
+export function getConstructor(prototype: any): Newable<any, any> {
   return prototype.constructor;
 }
 
