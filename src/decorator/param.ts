@@ -1,3 +1,4 @@
+import { Request } from "cross-fetch";
 import {
   ParamContext,
   ParamRecord,

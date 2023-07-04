@@ -1,3 +1,4 @@
+import { Request, Headers } from "cross-fetch";
 import {
   getClassMeta,
   getMethodMeta,

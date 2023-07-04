@@ -1,3 +1,4 @@
+import { Request } from "cross-fetch";
 import { InstanceParameterDecorator } from "../type/instance-parameter-decorator";
 import { Apply } from "./apply";
 

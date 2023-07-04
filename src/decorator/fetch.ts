@@ -1,3 +1,4 @@
+import { Request } from "cross-fetch";
 import { getClassMeta } from "../client/client-meta/class-meta";
 import { DecoratorError } from "../error";
 

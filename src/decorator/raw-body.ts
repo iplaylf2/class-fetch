@@ -1,3 +1,4 @@
+import { Request } from "cross-fetch";
 import { getClassMeta, getMethodMeta } from "../client/client-meta/class-meta";
 import { getParameterMeta } from "../client/client-meta/method-meta";
 import { ParameterMetaOrder } from "../client/client-meta/parameter-meta";

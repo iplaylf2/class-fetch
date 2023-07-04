@@ -1,4 +1,4 @@
-import fetch from "cross-fetch";
+import fetch, { Request } from "cross-fetch";
 import { AttachContext } from "../client/type/attach-context";
 import { Middleware } from "../client/type/middleware";
 import {
