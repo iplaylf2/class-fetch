@@ -336,7 +336,7 @@ async function transformResponse(
 }
 
 const finalFetch = (request: Request, _context: AttachContext) =>
-  fetch(request.url, request); // fix: Only absolute URLs are supported
+  fetch(request);
 
 const prettyRequestContextSymbol = Symbol("pretty-request-context");
 
