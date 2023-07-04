@@ -1,5 +1,7 @@
 # class-fetch
 
+[English](../README.md) | 中文
+
 `class-fetch` 是一个用于生成 HTTP 客户端的 js 库，使用 TypeScript 编写。
 
 - 基于 fetch，支持浏览器和 nodejs 的运行时。
@@ -108,7 +110,7 @@ const foo = build(Foo);
 - `Return`：用回调的方式处理请求的上下文，返回值将作为对应的实例方法的返回值。
 - `ReturnType`：使用内置的插件，通过 `class-transformer` 和 `class-validator` 对 Response 的 body 进行解码和校验。
 
-注意，Return 和 ReturnType 是互斥的，只能使用其中一个。
+注意，`Return` 和 `ReturnType` 是互斥的，只能使用其中一个。
 
 ## 异常处理
 

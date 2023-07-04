@@ -110,7 +110,7 @@ In this stage, you need to use one of the following two decorators:
 - `Return`: Use a callback to handle the request context, and the return value will be used as the return value of the corresponding instance method.
 - `ReturnType`: Use built-in plugins to decode and verify Response’s body using `class-transformer` and `class-validator`.
 
-Note that Return and ReturnType are mutually exclusive and can only use one of them.
+Note that `Return` and `ReturnType` are mutually exclusive and can only use one of them.
 
 ## Exception handling
 
