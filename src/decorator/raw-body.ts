@@ -10,6 +10,9 @@ export function RawBody<
   Key extends keyof Target,
   Index extends number
 >(): InstanceParameterDecorator<Target, Key, Index, BodyInit | null> {
+  const handler: PrettyRequest<BodyInit | null> = (arg, request) =>
+    new Request(request, { body: arg });
+
   return function (target, propertyKey, parameterIndex) {
     const classMeta = getClassMeta(getConstructor(target));
     const methodMeta = getMethodMeta(classMeta, propertyKey as string);
@@ -18,9 +21,6 @@ export function RawBody<
       ParameterMetaOrder.Body,
       parameterIndex
     );
-
-    const handler: PrettyRequest<BodyInit | null> = (arg, request) =>
-      new Request(request, { body: arg });
 
     parameterMeta.push(handler);
   } as InstanceParameterDecorator<Target, Key, Index, BodyInit | null>;
