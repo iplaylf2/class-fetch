@@ -1,6 +1,6 @@
 # class-fetch
 
-English | [中文](./doc/README.cn.md)
+English | [中文](https://github.com/iplaylf2/class-fetch/blob/main/doc/README.cn.md)
 
 `class-fetch` is a js library for generating HTTP clients, written in TypeScript.
 
