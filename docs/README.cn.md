@@ -19,6 +19,7 @@ npm install class-fetch
 - `class-transformer`
 - `class-validator`
 - `cross-fetch`
+
 请确保你的项目中安装了这些库。
 
 ## 使用
@@ -65,6 +66,7 @@ const foo = build(Foo);
 - prettyRequest：修饰请求，修改路径、请求头、查询参数 和 body 等配置。
 - middleware：执行中间件函数，对请求和响应进行拦截和处理。
 - transformResponse：转换响应，根据返回值的类型和处理方式对 Response 进行转换并校验。
+
 装饰器的作用贯穿在这 4 个阶段中，它们各自存在一些优先级、排他性和必需性。
 
 ### build 阶段
@@ -110,4 +112,4 @@ const foo = build(Foo);
 
 ## 异常处理
 
-你可以通过 `ReThrow` 装饰器在装饰类和实例方法，处理在 prettyRequest, middleware, transformResponse 阶段抛出的异常，最后重新抛出。
+你可以通过 `ReThrow` 装饰器装饰类和实例方法，处理在 prettyRequest, middleware, transformResponse 阶段抛出的异常，最后重新抛出。
