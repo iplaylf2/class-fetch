@@ -17,10 +17,7 @@ import {
 } from "./client-meta/attach-context-item";
 import { getClassMeta } from "./client-meta/class-meta";
 import { MethodMeta } from "./client-meta/method-meta";
-import {
-  ParameterMeta,
-  ParameterMetaOrder,
-} from "./client-meta/parameter-meta";
+import { ParameterMetaOrder } from "./client-meta/parameter-meta";
 import { ReThrow } from "./type/re-throw";
 import { Return } from "./type/return";
 import { appendPath } from "./utility/append-path";
@@ -229,24 +226,28 @@ async function prettyRequest(
   args: unknown[],
   request: Request,
   context: AttachContext,
-  parameterMeta: ParameterMeta[][]
+  parameterMeta: MethodMeta["parameterMeta"]
 ) {
   try {
     return await reduce(
-      from(parameterMeta.filter((x) => x)),
+      from(
+        parameterMeta.filter(<T>(x: T | undefined): x is T => undefined !== x)
+      ),
       (request, order) =>
         reduce(
-          from(order.filter((x) => x)),
+          from(order),
           (request, parameterMeta, index) =>
-            reduce(
-              from(parameterMeta),
-              (request, pretty) => {
-                context.set(prettyRequestContextSymbol, request);
+            parameterMeta
+              ? reduce(
+                  from(parameterMeta),
+                  (request, pretty) => {
+                    context.set(prettyRequestContextSymbol, request);
 
-                return pretty(args[index], request, context);
-              },
-              request
-            ),
+                    return pretty(args[index], request, context);
+                  },
+                  request
+                )
+              : request,
           request
         ),
       request
@@ -266,7 +267,7 @@ async function prettyRequestWithFormat(
   args: unknown[],
   request: Request,
   context: AttachContext,
-  parameterMeta: ParameterMeta[][],
+  parameterMeta: MethodMeta["parameterMeta"],
   pathFormat: Format
 ) {
   const indexList = parameterMeta[ParameterMetaOrder.Param] ?? [];

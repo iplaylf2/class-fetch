@@ -25,8 +25,8 @@ export function cloneMethodMeta(x: MethodMeta): MethodMeta {
     return: x.return,
     reThrow: Array.from(x.reThrow),
     middleware: Array.from(x.middleware),
-    parameterMeta: x.parameterMeta.map((order) =>
-      order.map((index) => Array.from(index))
+    parameterMeta: x.parameterMeta.map(
+      (order) => order && order.map((index) => index && Array.from(index))
     ),
   };
 }
@@ -68,5 +68,5 @@ export type MethodMeta = {
   return: Return | null;
   reThrow: ReThrow[];
   middleware: Middleware[];
-  parameterMeta: ParameterMeta[][];
+  parameterMeta: ((ParameterMeta | undefined)[] | undefined)[];
 };
