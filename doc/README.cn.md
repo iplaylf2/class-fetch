@@ -1,6 +1,6 @@
 # class-fetch
 
-[English](https://github.com/iplaylf2/class-fetch/blob/main/README.md) | 中文
+[English](https://github.com/iplaylf2/class-fetch/blob/master/README.md) | 中文
 
 `class-fetch` 是一个用于生成 HTTP 客户端的 js 库，使用 TypeScript 编写。
 
